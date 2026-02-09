@@ -1,0 +1,1 @@
+"""Modulo de voz (placeholder)."""
