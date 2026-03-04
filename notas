@@ -1,0 +1,28 @@
+Perfecto. Configuración exacta usando solo 2.final para HRV (smartwatch/pulso), sin fuga de información:
+
+Clasificación de estrés (3 clases)
+Train: unseen-wesad-classification-hrv-train-dataset.csv
+Val: unseen-wesad-classification-hrv-validation-dataset.csv
+Test: unseen-wesad-classification-hrv-test-dataset.csv
+Target: condition label (mapeo real: baseline=0, amusement=1, stress=2)
+No usar como features: subject id, condition, SSSQ class, SSSQ Label, condition label
+Regresión de intensidad de estrés
+Train: unseen-wesad-regression-hrv-train-dataset.csv
+Val: unseen-wesad-regression-hrv-validation-dataset.csv
+Test: unseen-wesad-regression-hrv-test-dataset.csv
+Target: SSSQ (rango observado 2.0 a 5.0)
+No usar como features: subject id, condition, SSSQ
+Agrupamiento (clustering)
+Usa el train de clasificación:
+unseen-wesad-classification-hrv-train-dataset.csv
+Quita todas las columnas de etiqueta/ID: subject id, condition, SSSQ class, SSSQ Label, condition label
+Solo HRV features numéricas.
+Estandariza (StandardScaler) antes de KMeans/GMM.
+Plantilla anti-fuga (aplícalo en cada tarea):
+
+drop_cols = {'subject id','subject_id','condition','SSSQ class','SSSQ Label','condition label','Condition Label','NasaTLX Label','NasaTLX class','SSSQ','NasaTLX'}
+X = df[[c for c in df.columns if c not in drop_cols]]
+Si quieres, te armo el script train_stress_hrv.py listo para correr con estas rutas y splits.
+
+
+

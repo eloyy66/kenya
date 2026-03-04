@@ -1,0 +1,8 @@
+# Dependencias compartidas para utilidades de datos y APIs.
+fastapi==0.115.12
+uvicorn[standard]==0.30.6
+pydantic==2.11.7
+httpx==0.28.1
+pandas==2.2.3
+scipy==1.15.3
+python-dotenv==1.0.1

@@ -1,0 +1,180 @@
+# Comentarios Línea por Línea: `training/train_biometrics_stress.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/training/train_biometrics_stress.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Entrenamiento baseline para estrés biométrico con TensorFlow."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# json para guardar metadata de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import json` | Importa dependencias del módulo: json.
+- L9 | `# Path para manejo de rutas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `# typing para hints de listas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L12 | `from typing import List, Tuple` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L13 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L14 | `# numpy para matrices numéricas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L15 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L16 | `# tensorflow para modelo MLP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L17 | `import tensorflow as tf` | Importa dependencias del módulo: tensorflow as tf.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `# extractor reusable de biometría.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `from mostacho.features.biometrics import extract_biometrics_features` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L21 | `# configuración global.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L23 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L24 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L25 | `def _resolve_default_biometrics_dir(db_root: Path) -> Path:` | Declara la función `_resolve_default_biometrics_dir` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L26 | `    """Resuelve ruta por defecto para biometría con prioridad en estructura nueva."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L27 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L28 | `    # Se prioriza árbol nuevo y luego rutas legacy.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L29 | `    candidates = [` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L30 | `        db_root / "biometrics" / "stress" / "dataset",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L31 | `        db_root / "stress" / "dataset",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L32 | `    ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L33 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L34 | `    # Retorna el primer candidato existente.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L35 | `    for candidate in candidates:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L36 | `        if candidate.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L37 | `            return candidate` | Retorna un valor al llamador como resultado explícito de la función.
+- L38 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L39 | `    # Si no existe ninguno, retorna primera opción para error coherente.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L40 | `    return candidates[0]` | Retorna un valor al llamador como resultado explícito de la función.
+- L41 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L42 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L43 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L44 | `    """Argumentos para entrenamiento biométrico."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L45 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L46 | `    # Parser con descripción breve.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L47 | `    parser = argparse.ArgumentParser(description="Entrena clasificador biométrico de estrés")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L48 | `    # Carpeta base del dataset de stress.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L49 | `    parser.add_argument("--data-dir", type=Path, default=None, help="Base del dataset de stress")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L50 | `    # Épocas de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `    parser.add_argument("--epochs", type=int, default=20, help="Numero de epocas")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L52 | `    # Batch size.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L53 | `    parser.add_argument("--batch-size", type=int, default=64, help="Batch size")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L54 | `    # Limite opcional de archivos para pruebas rápidas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L55 | `    parser.add_argument("--max-files", type=int, default=0, help="Limite opcional de archivos")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L56 | `    # Retorno de argumentos parseados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L58 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L59 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L60 | `def _label_from_path(path: Path) -> int:` | Declara la función `_label_from_path` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L61 | `    """Heurística simple de etiqueta binaria (0=no stress, 1=stress)."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L62 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L63 | `    # Se normaliza ruta completa a minúsculas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L64 | `    normalized = str(path).lower()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L65 | `    # Regla simple: archivos bajo \`wesad\` y \`stress\` se marcan como estrés potencial.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L66 | `    if "wesad" in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L67 | `        return 1` | Retorna un valor al llamador como resultado explícito de la función.
+- L68 | `    if "stress" in normalized and "no stress" not in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L69 | `        return 1` | Retorna un valor al llamador como resultado explícito de la función.
+- L70 | `    # Caso por defecto: no stress.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L71 | `    return 0` | Retorna un valor al llamador como resultado explícito de la función.
+- L72 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L73 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L74 | `def load_dataset(data_dir: Path, max_files: int = 0) -> Tuple[np.ndarray, np.ndarray, List[str]]:` | Declara la función `load_dataset` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L75 | `    """Carga archivos tabulares y crea dataset numérico para MLP."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L76 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L77 | `    # Se buscan CSV y TXT recursivamente.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L78 | `    files = sorted([*data_dir.rglob("*.csv"), *data_dir.rglob("*.txt")])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L79 | `    # Se limita si usuario lo solicita.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L80 | `    if max_files > 0:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L81 | `        files = files[:max_files]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L82 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L83 | `    # Contenedores de features y etiquetas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L84 | `    rows = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L85 | `    labels = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L86 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L87 | `    # Se itera sobre archivos detectados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L88 | `    for path in files:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L89 | `        # Se extraen features resumidas por archivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L90 | `        features = extract_biometrics_features(path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L91 | `        # Se ignora si no hubo datos útiles.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L92 | `        if features.get("bio_available", 0.0) < 0.5:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L93 | `            continue` | Salta al siguiente ciclo del bucle actual sin ejecutar el resto del cuerpo.
+- L94 | `        # Se agrega fila de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L95 | `        rows.append(features)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L96 | `        # Se agrega etiqueta heurística.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L97 | `        labels.append(_label_from_path(path))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L98 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L99 | `    # Validación para evitar entrenamiento vacío.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L100 | `    if not rows:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L101 | `        raise RuntimeError("No se pudieron extraer features biométricas.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L102 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L103 | `    # Se fija orden de columnas por primera fila.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L104 | `    feature_order = sorted(rows[0].keys())` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L105 | `    # Se arma matriz X.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L106 | `    x = np.array([[row.get(name, 0.0) for name in feature_order] for row in rows], dtype=np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L107 | `    # Se arma vector y.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L108 | `    y = np.array(labels, dtype=np.int32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L109 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L110 | `    # Se devuelve dataset tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L111 | `    return x, y, feature_order` | Retorna un valor al llamador como resultado explícito de la función.
+- L112 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L113 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L114 | `def build_model(num_features: int) -> tf.keras.Model:` | Declara la función `build_model` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L115 | `    """Construye clasificador binario de estrés."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L116 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L117 | `    # Entrada tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L118 | `    inputs = tf.keras.Input(shape=(num_features,))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L119 | `    # Primera capa densa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L120 | `    x = tf.keras.layers.Dense(64, activation="relu")(inputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L121 | `    # Regularización dropout.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L122 | `    x = tf.keras.layers.Dropout(0.2)(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L123 | `    # Segunda capa densa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L124 | `    x = tf.keras.layers.Dense(32, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L125 | `    # Salida sigmoide binaria.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L126 | `    outputs = tf.keras.layers.Dense(1, activation="sigmoid")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L127 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L128 | `    # Se crea y compila modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L129 | `    model = tf.keras.Model(inputs=inputs, outputs=outputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L130 | `    model.compile(optimizer="adam", loss="binary_crossentropy", metrics=["accuracy"])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L131 | `    return model` | Retorna un valor al llamador como resultado explícito de la función.
+- L132 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L133 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L134 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L135 | `    """Entrena baseline biométrico y guarda artefactos."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L136 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L137 | `    # Se parsean argumentos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L138 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L139 | `    # Se cargan settings.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L140 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L141 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L142 | `    # Se define carpeta base biométrica.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L143 | `    data_dir = args.data_dir or _resolve_default_biometrics_dir(settings.db_root)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L144 | `    # Se valida ruta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L145 | `    if not data_dir.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L146 | `        raise FileNotFoundError(f"No existe data_dir: {data_dir}")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L147 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L148 | `    # Se construye dataset.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L149 | `    x, y, feature_order = load_dataset(data_dir=data_dir, max_files=args.max_files)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L150 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L151 | `    # Se construye modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L152 | `    model = build_model(num_features=x.shape[1])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L153 | `    # Entrenamiento baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L154 | `    model.fit(x, y, epochs=args.epochs, batch_size=args.batch_size, validation_split=0.2, verbose=1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L155 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L156 | `    # Se prepara salida de artefactos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L157 | `    output_dir = settings.artifacts_root / "models"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L158 | `    output_dir.mkdir(parents=True, exist_ok=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L159 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L160 | `    # Guardado del modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L161 | `    model_path = output_dir / "biometrics_stress.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L162 | `    model.save(model_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L163 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L164 | `    # Guardado de metadata de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L165 | `    metadata_path = output_dir / "biometrics_stress_metadata.json"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L166 | `    metadata_path.write_text(json.dumps({"feature_order": feature_order}, indent=2, ensure_ascii=True), encoding="utf-8")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L167 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L168 | `    # Mensajes para operador.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L169 | `    print(f"Modelo biométrico guardado en: {model_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L170 | `    print(f"Metadata biométrica guardada en: {metadata_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L171 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L172 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L173 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L174 | `    # Entrada script directa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L175 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

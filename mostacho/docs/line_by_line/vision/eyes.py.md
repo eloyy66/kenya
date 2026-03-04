@@ -1,0 +1,69 @@
+# Comentarios Línea por Línea: `vision/eyes.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/vision/eyes.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Utilidades para extraer landmarks de ojos y calcular EAR."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# numpy se usa para cálculo vectorial y distancias euclidianas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L7 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L8 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L9 | `def euclidean(point_a: np.ndarray, point_b: np.ndarray) -> float:` | Declara la función `euclidean` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L10 | `    """Calcula distancia euclidiana entre dos puntos 2D."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L11 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L12 | `    # Se usa norma L2 estándar para distancia geométrica.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L13 | `    return float(np.linalg.norm(point_a - point_b))` | Retorna un valor al llamador como resultado explícito de la función.
+- L14 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `def compute_ear(eye_points: np.ndarray) -> float:` | Declara la función `compute_ear` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L17 | `    """Calcula Eye Aspect Ratio (EAR) a partir de 6 puntos del ojo."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `    # Distancia vertical 1 (p2-p6).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `    distance_a = euclidean(eye_points[1], eye_points[5])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L21 | `    # Distancia vertical 2 (p3-p5).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `    distance_b = euclidean(eye_points[2], eye_points[4])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L23 | `    # Distancia horizontal (p1-p4).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L24 | `    distance_c = euclidean(eye_points[0], eye_points[3])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L25 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L26 | `    # Evita división por cero en casos degenerados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L27 | `    if distance_c <= 1e-9:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L28 | `        return 0.0` | Retorna un valor al llamador como resultado explícito de la función.
+- L29 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L30 | `    # Fórmula clásica del EAR.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L31 | `    return float((distance_a + distance_b) / (2.0 * distance_c))` | Retorna un valor al llamador como resultado explícito de la función.
+- L32 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L33 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L34 | `def get_eye_landmarks_from_face(face: object) -> tuple[np.ndarray | None, np.ndarray | None]:` | Declara la función `get_eye_landmarks_from_face` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L35 | `    """Obtiene 6 puntos por ojo desde landmarks 68 o 106 de InsightFace."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L36 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L37 | `    # Prioridad a landmarks de 68 puntos por convención establecida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L38 | `    landmarks_68 = getattr(face, "landmark_3d_68", None)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L39 | `    if landmarks_68 is not None and getattr(landmarks_68, "shape", (0,))[0] >= 68:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L40 | `        # Se reduce a coordenadas 2D (x, y).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `        kps = landmarks_68[:, :2]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L42 | `        # Índices estándar para ojo izquierdo en malla de 68.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `        left_eye_idx = [36, 37, 38, 39, 40, 41]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L44 | `        # Índices estándar para ojo derecho en malla de 68.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L45 | `        right_eye_idx = [42, 43, 44, 45, 46, 47]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L46 | `        # Se construyen arreglos de puntos por ojo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L47 | `        left_eye = np.array([kps[index] for index in left_eye_idx], dtype=float)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L48 | `        right_eye = np.array([kps[index] for index in right_eye_idx], dtype=float)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L49 | `        return left_eye, right_eye` | Retorna un valor al llamador como resultado explícito de la función.
+- L50 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L51 | `    # Fallback a malla de 106 puntos cuando no hay 68.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L52 | `    landmarks_106 = getattr(face, "landmark_2d_106", None)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L53 | `    if landmarks_106 is None or getattr(landmarks_106, "shape", (0,))[0] < 98:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L54 | `        return None, None` | Retorna un valor al llamador como resultado explícito de la función.
+- L55 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L56 | `    # Índices equivalentes aproximados en malla 106 para ojo izquierdo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `    left_eye_idx = [33, 35, 37, 39, 41, 43]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L58 | `    # Índices equivalentes aproximados en malla 106 para ojo derecho.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L59 | `    right_eye_idx = [87, 89, 91, 93, 95, 97]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L60 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L61 | `    # Construcción de arreglos de puntos por ojo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L62 | `    left_eye = np.array([landmarks_106[index] for index in left_eye_idx], dtype=float)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L63 | `    right_eye = np.array([landmarks_106[index] for index in right_eye_idx], dtype=float)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L64 | `    return left_eye, right_eye` | Retorna un valor al llamador como resultado explícito de la función.
