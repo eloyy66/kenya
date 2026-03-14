@@ -1,0 +1,149 @@
+# Comentarios Línea por Línea: `training/train_vision_emotion.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/training/train_vision_emotion.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Entrenamiento base de emociones visuales con TensorFlow."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para configuración por CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# Path para rutas robustas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L9 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L10 | `# tensorflow para entrenamiento CNN.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L11 | `import tensorflow as tf` | Importa dependencias del módulo: tensorflow as tf.
+- L12 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L13 | `# configuración global del proyecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L14 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L17 | `def _resolve_default_vision_data_dir(db_root: Path) -> Path:` | Declara la función `_resolve_default_vision_data_dir` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L18 | `    """Resuelve directorio de entrenamiento visual con prioridad en estructura nueva."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L19 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L20 | `    # Orden de prioridad: estructura nueva primero, luego fallback legacy.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L21 | `    candidates = [` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L22 | `        db_root / "artificialvision" / "generalcontext-emotions2",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L23 | `        db_root / "artificialvision" / "generalcontext-emotions",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L24 | `        db_root / "processed_data",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L25 | `        db_root / "Data",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L26 | `    ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L27 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L28 | `    # Retorna primer directorio existente.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L29 | `    for candidate in candidates:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L30 | `        if candidate.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L31 | `            return candidate` | Retorna un valor al llamador como resultado explícito de la función.
+- L32 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L33 | `    # Si nada existe, retorna candidato principal para mensaje de error consistente.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L34 | `    return candidates[0]` | Retorna un valor al llamador como resultado explícito de la función.
+- L35 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L36 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L37 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L38 | `    """Define argumentos de entrenamiento visual."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L39 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L40 | `    # Se crea parser con descripción.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `    parser = argparse.ArgumentParser(description="Entrena clasificador visual de emociones")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L42 | `    # Carpeta de imágenes por clase.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `    parser.add_argument(` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L44 | `        "--data-dir",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L45 | `        type=Path,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L46 | `        default=None,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L47 | `        help="Directorio con subcarpetas por clase (default: db/artificialvision/generalcontext-emotions2)",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L48 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L49 | `    # Tamaño de lote para entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L50 | `    parser.add_argument("--batch-size", type=int, default=32, help="Batch size")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L51 | `    # Épocas de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L52 | `    parser.add_argument("--epochs", type=int, default=5, help="Numero de epocas")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L53 | `    # Tamaño de entrada cuadrado de imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L54 | `    parser.add_argument("--image-size", type=int, default=128, help="Lado de imagen")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L55 | `    # Se retorna namespace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L56 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L57 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L58 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L59 | `def build_model(num_classes: int, image_size: int) -> tf.keras.Model:` | Declara la función `build_model` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L60 | `    """Construye CNN compacta para baseline visual."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L61 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L62 | `    # Capa de entrada RGB.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L63 | `    inputs = tf.keras.Input(shape=(image_size, image_size, 3))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L64 | `    # Normalización [0,1].` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L65 | `    x = tf.keras.layers.Rescaling(1.0 / 255.0)(inputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L66 | `    # Primer bloque convolucional.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L67 | `    x = tf.keras.layers.Conv2D(32, 3, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L68 | `    x = tf.keras.layers.MaxPooling2D()(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L69 | `    # Segundo bloque convolucional.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L70 | `    x = tf.keras.layers.Conv2D(64, 3, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L71 | `    x = tf.keras.layers.MaxPooling2D()(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L72 | `    # Tercer bloque convolucional.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L73 | `    x = tf.keras.layers.Conv2D(128, 3, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L74 | `    x = tf.keras.layers.GlobalAveragePooling2D()(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L75 | `    # Capa densa para representación intermedia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L76 | `    x = tf.keras.layers.Dense(128, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L77 | `    # Salida softmax por clases emocionales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L78 | `    outputs = tf.keras.layers.Dense(num_classes, activation="softmax")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L79 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L80 | `    # Modelo final compilado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L81 | `    model = tf.keras.Model(inputs=inputs, outputs=outputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L82 | `    model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L83 | `    return model` | Retorna un valor al llamador como resultado explícito de la función.
+- L84 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L85 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L86 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L87 | `    """Entrena y guarda modelo visual baseline."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L88 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L89 | `    # Se leen argumentos de CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L90 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L91 | `    # Se carga configuración global.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L92 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L93 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L94 | `    # Se resuelve ruta de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L95 | `    data_dir = args.data_dir or _resolve_default_vision_data_dir(settings.db_root)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L96 | `    # Validación temprana de ruta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L97 | `    if not data_dir.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L98 | `        raise FileNotFoundError(f"No existe data_dir: {data_dir}")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L99 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L100 | `    # Dataset de entrenamiento con split interno.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L101 | `    train_ds = tf.keras.utils.image_dataset_from_directory(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L102 | `        str(data_dir),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L103 | `        validation_split=0.2,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L104 | `        subset="training",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L105 | `        seed=42,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L106 | `        image_size=(args.image_size, args.image_size),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L107 | `        batch_size=args.batch_size,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L108 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L109 | `    # Dataset de validación.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L110 | `    val_ds = tf.keras.utils.image_dataset_from_directory(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L111 | `        str(data_dir),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L112 | `        validation_split=0.2,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L113 | `        subset="validation",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L114 | `        seed=42,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L115 | `        image_size=(args.image_size, args.image_size),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L116 | `        batch_size=args.batch_size,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L117 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L118 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L119 | `    # Cálculo de clases desde dataset.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L120 | `    class_names = train_ds.class_names` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L121 | `    # Construcción de modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L122 | `    model = build_model(num_classes=len(class_names), image_size=args.image_size)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L123 | `    # Entrenamiento baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L124 | `    model.fit(train_ds, validation_data=val_ds, epochs=args.epochs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L125 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L126 | `    # Ruta de salida del modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L127 | `    output_path = settings.artifacts_root / "models" / "vision_emotion.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L128 | `    # Creación de carpeta destino.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L129 | `    output_path.parent.mkdir(parents=True, exist_ok=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L130 | `    # Guardado del modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L131 | `    model.save(output_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L132 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L133 | `    # Guardado de clases en texto para inferencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L134 | `    classes_path = settings.artifacts_root / "models" / "vision_emotion_classes.txt"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L135 | `    classes_path.write_text("\n".join(class_names), encoding="utf-8")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L136 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L137 | `    # Log final de artefactos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L138 | `    print(f"Modelo visual guardado en: {output_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L139 | `    print(f"Clases visuales guardadas en: {classes_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L140 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L141 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L142 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L143 | `    # Entrada directa por CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L144 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

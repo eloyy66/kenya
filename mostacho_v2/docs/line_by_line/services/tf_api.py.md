@@ -1,0 +1,502 @@
+# Comentarios Línea por Línea: `services/tf_api.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/services/tf_api.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Servicio FastAPI para fusión multimodal y somnolencia visual con TensorFlow."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# base64 para decodificar imágenes enviadas por HTTP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import base64` | Importa dependencias del módulo: base64.
+- L7 | `# json para cargar metadata de modelos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import json` | Importa dependencias del módulo: json.
+- L9 | `# logging para observabilidad operativa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `import logging` | Importa dependencias del módulo: logging.
+- L11 | `# os para variables de entorno.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L12 | `import os` | Importa dependencias del módulo: os.
+- L13 | `# Path para rutas de artefactos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L14 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L15 | `# typing para contratos explícitos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L16 | `from typing import Dict, List, Tuple` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L17 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L18 | `# numpy para vectores y operaciones numéricas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L19 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L20 | `# FastAPI para exponer endpoints.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L21 | `from fastapi import FastAPI, HTTPException` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L22 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L23 | `# Esquemas compartidos entre servicios.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L24 | `from mostacho.schemas import (` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L25 | `    DrowsinessImageRequest,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L26 | `    DrowsinessResponse,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L27 | `    FusionRequest,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L28 | `    FusionResponse,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L29 | `    HealthResponse,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L30 | `    utc_now_iso,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L31 | `)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L32 | `# Configuración global del proyecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L33 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L34 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L35 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L36 | `# Logger del módulo para seguimiento de estado y errores.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L37 | `LOGGER = logging.getLogger(__name__)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L38 | `# Aplicación principal del servicio TF.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `app = FastAPI(title="Mostacho TF Service", version="0.2.0")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L40 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L41 | `# Cache global de modelo multimodal tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L42 | `_MODEL = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L43 | `# Cache del orden de features del modelo tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L44 | `_FEATURE_ORDER: List[str] = []` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L45 | `# Clases del modelo multimodal tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L46 | `CLASSES = ["alert", "somnolent", "stressed", "distracted"]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L47 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L48 | `# Cache del modelo visual de somnolencia por imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L49 | `_DROWSINESS_MODEL = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L50 | `# Cache de clases del modelo visual de somnolencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `_DROWSINESS_CLASS_NAMES: List[str] = []` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L52 | `# Tamaño de entrada del modelo visual (alto, ancho).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L53 | `_DROWSINESS_INPUT_SIZE: Tuple[int, int] = (160, 160)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L54 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L55 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L56 | `def _model_paths() -> Tuple[Path, Path]:` | Declara la función `_model_paths` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L57 | `    """Resuelve rutas del modelo tabular de fusión y su metadata."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L58 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L59 | `    # Carga configuración base de rutas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L60 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L61 | `    # Modelo tabular por defecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L62 | `    default_model = settings.artifacts_root / "models" / "multimodal_fusion.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L63 | `    # Orden de features tabular por defecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L64 | `    default_order = settings.artifacts_root / "models" / "multimodal_feature_order.json"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L65 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L66 | `    # Permite override por variables de entorno.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L67 | `    model_path = Path(os.getenv("MOSTACHO_TF_MODEL", str(default_model)))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L68 | `    feature_order_path = Path(os.getenv("MOSTACHO_TF_FEATURE_ORDER", str(default_order)))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L69 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L70 | `    # Retorna rutas resueltas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L71 | `    return model_path, feature_order_path` | Retorna un valor al llamador como resultado explícito de la función.
+- L72 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L73 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L74 | `def _drowsiness_model_paths() -> Tuple[Path, Path]:` | Declara la función `_drowsiness_model_paths` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L75 | `    """Resuelve rutas del modelo visual de somnolencia y sus clases."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L76 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L77 | `    # Carga configuración base de rutas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L78 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L79 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L80 | `    # Ruta preferida para mejor checkpoint de validación.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L81 | `    default_best = settings.artifacts_root / "models" / "drowsiness_vision_best.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L82 | `    # Ruta fallback del modelo final.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L83 | `    default_final = settings.artifacts_root / "models" / "drowsiness_vision.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L84 | `    # Archivo de clases para mapping de salida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L85 | `    default_classes = settings.artifacts_root / "models" / "drowsiness_vision_classes.txt"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L86 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L87 | `    # Permite override completo del modelo visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L88 | `    model_override = os.getenv("MOSTACHO_DROWSINESS_MODEL", "").strip()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L89 | `    if model_override:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L90 | `        model_path = Path(model_override)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L91 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L92 | `        model_path = default_best if default_best.exists() else default_final` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L93 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L94 | `    # Permite override del archivo de clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L95 | `    classes_path = Path(os.getenv("MOSTACHO_DROWSINESS_CLASSES", str(default_classes)))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L96 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L97 | `    # Retorna rutas resueltas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L98 | `    return model_path, classes_path` | Retorna un valor al llamador como resultado explícito de la función.
+- L99 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L100 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L101 | `def _load_tf_model_once() -> None:` | Declara la función `_load_tf_model_once` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L102 | `    """Carga una sola vez el modelo tabular de fusión y su metadata."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L103 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L104 | `    # Accede a caches globales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L105 | `    global _MODEL, _FEATURE_ORDER` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L106 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L107 | `    # Si ya está cargado, no repite trabajo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L108 | `    if _MODEL is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L109 | `        return` | Finaliza la función y retorna `None` de forma explícita.
+- L110 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L111 | `    # Import local para no romper entornos sin TensorFlow.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L112 | `    import tensorflow as tf  # type: ignore` | Importa dependencias del módulo: tensorflow as tf  # type: ignore.
+- L113 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L114 | `    # Obtiene rutas del modelo tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L115 | `    model_path, feature_order_path = _model_paths()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L116 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L117 | `    # Si no existe modelo, habilita modo heurístico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L118 | `    if not model_path.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L119 | `        LOGGER.warning("No existe modelo tabular en %s. Se usara modo heuristico.", model_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L120 | `        _MODEL = False` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L121 | `        _FEATURE_ORDER = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L122 | `        return` | Finaliza la función y retorna `None` de forma explícita.
+- L123 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L124 | `    # Carga modelo Keras tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L125 | `    _MODEL = tf.keras.models.load_model(model_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L126 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L127 | `    # Carga orden de features si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L128 | `    if feature_order_path.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L129 | `        _FEATURE_ORDER = json.loads(feature_order_path.read_text(encoding="utf-8"))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L130 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L131 | `        _FEATURE_ORDER = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L132 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L133 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L134 | `def _load_drowsiness_model_once() -> None:` | Declara la función `_load_drowsiness_model_once` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L135 | `    """Carga una sola vez el modelo visual de somnolencia y sus clases."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L136 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L137 | `    # Accede a caches globales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L138 | `    global _DROWSINESS_MODEL, _DROWSINESS_CLASS_NAMES, _DROWSINESS_INPUT_SIZE` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L139 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L140 | `    # Si ya está cargado, no repite.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L141 | `    if _DROWSINESS_MODEL is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L142 | `        return` | Finaliza la función y retorna `None` de forma explícita.
+- L143 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L144 | `    # Import local para mantener aislamiento de dependencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L145 | `    import tensorflow as tf  # type: ignore` | Importa dependencias del módulo: tensorflow as tf  # type: ignore.
+- L146 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L147 | `    # Resuelve rutas de modelo y clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L148 | `    model_path, classes_path = _drowsiness_model_paths()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L149 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L150 | `    # Si no existe modelo, habilita fallback heurístico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L151 | `    if not model_path.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L152 | `        LOGGER.warning("No existe modelo visual de somnolencia en %s. Se usara fallback heuristico.", model_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L153 | `        _DROWSINESS_MODEL = False` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L154 | `        _DROWSINESS_CLASS_NAMES = ["alert", "yawning", "microsleep"]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L155 | `        _DROWSINESS_INPUT_SIZE = (160, 160)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L156 | `        return` | Finaliza la función y retorna `None` de forma explícita.
+- L157 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L158 | `    # Carga modelo visual de somnolencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L159 | `    model = tf.keras.models.load_model(model_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L160 | `    _DROWSINESS_MODEL = model` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L161 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L162 | `    # Intenta inferir tamaño de entrada del modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L163 | `    input_shape = getattr(model, "input_shape", None)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L164 | `    if isinstance(input_shape, tuple) and len(input_shape) >= 3:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L165 | `        height = int(input_shape[1] or 160)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L166 | `        width = int(input_shape[2] or 160)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L167 | `        _DROWSINESS_INPUT_SIZE = (height, width)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L168 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L169 | `        _DROWSINESS_INPUT_SIZE = (160, 160)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L170 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L171 | `    # Carga clases desde archivo si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L172 | `    if classes_path.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L173 | `        names = [line.strip() for line in classes_path.read_text(encoding="utf-8").splitlines() if line.strip()]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L174 | `        if names:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L175 | `            _DROWSINESS_CLASS_NAMES = names` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L176 | `        else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L177 | `            _DROWSINESS_CLASS_NAMES = ["alert", "yawning", "microsleep"]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L178 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L179 | `        _DROWSINESS_CLASS_NAMES = ["alert", "yawning", "microsleep"]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L180 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L181 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L182 | `def _flatten_features(payload: FusionRequest) -> Dict[str, float]:` | Declara la función `_flatten_features` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L183 | `    """Une las modalidades en un único diccionario numérico."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L184 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L185 | `    # Contenedor final de features fusionadas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L186 | `    merged: Dict[str, float] = {}` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L187 | `    # Agrega features de visión.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L188 | `    merged.update(payload.vision_features)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L189 | `    # Agrega features de voz.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L190 | `    merged.update(payload.voice_features)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L191 | `    # Agrega features de biometría.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L192 | `    merged.update(payload.biometric_features)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L193 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L194 | `    # Filtra a valores estrictamente numéricos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L195 | `    numeric_only = {key: float(value) for key, value in merged.items() if isinstance(value, (int, float))}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L196 | `    return numeric_only` | Retorna un valor al llamador como resultado explícito de la función.
+- L197 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L198 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L199 | `def _heuristic_predict(features: Dict[str, float]) -> Dict[str, float]:` | Declara la función `_heuristic_predict` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L200 | `    """Heurística fallback para el modelo tabular multimodal."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L201 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L202 | `    # Puntaje base uniforme.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L203 | `    scores = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L204 | `        "alert": 0.25,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L205 | `        "somnolent": 0.25,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L206 | `        "stressed": 0.25,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L207 | `        "distracted": 0.25,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L208 | `    }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L209 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L210 | `    # Reglas simples por señales de visión y biometría.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L211 | `    if features.get("vision_face_count", 0.0) < 0.5:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L212 | `        scores["distracted"] += 0.25` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L213 | `    if features.get("vision_primary_face_area_ratio", 0.0) < 0.08:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L214 | `        scores["distracted"] += 0.15` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L215 | `    if features.get("voice_rms_mean", 0.0) < 0.02:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L216 | `        scores["somnolent"] += 0.20` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L217 | `    if features.get("bio_available", 0.0) > 0.5 and features.get("bio_num_rows", 0.0) > 10:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L218 | `        scores["stressed"] += 0.10` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L219 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L220 | `    # Normalización a distribución de probabilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L221 | `    values = np.array([scores[label] for label in CLASSES], dtype=np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L222 | `    probs = values / np.sum(values)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L223 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L224 | `    # Retorna mapa clase -> probabilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L225 | `    return {label: float(prob) for label, prob in zip(CLASSES, probs)}` | Retorna un valor al llamador como resultado explícito de la función.
+- L226 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L227 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L228 | `def _model_predict(features: Dict[str, float]) -> Dict[str, float]:` | Declara la función `_model_predict` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L229 | `    """Predice con modelo tabular entrenado o fallback heurístico."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L230 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L231 | `    # Asegura carga del modelo tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L232 | `    _load_tf_model_once()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L233 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L234 | `    # Si no hay modelo real, usa heurística.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L235 | `    if _MODEL is False:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L236 | `        return _heuristic_predict(features)` | Retorna un valor al llamador como resultado explícito de la función.
+- L237 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L238 | `    # Si no hay orden de features, también usa heurística.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L239 | `    if not _FEATURE_ORDER:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L240 | `        return _heuristic_predict(features)` | Retorna un valor al llamador como resultado explícito de la función.
+- L241 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L242 | `    # Vectoriza según orden de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L243 | `    vector = np.array([features.get(name, 0.0) for name in _FEATURE_ORDER], dtype=np.float32).reshape(1, -1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L244 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L245 | `    # Predicción del modelo tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L246 | `    raw = _MODEL.predict(vector, verbose=0)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L247 | `    probabilities = np.asarray(raw).reshape(-1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L248 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L249 | `    # Valida dimensionalidad esperada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L250 | `    if probabilities.shape[0] != len(CLASSES):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L251 | `        return _heuristic_predict(features)` | Retorna un valor al llamador como resultado explícito de la función.
+- L252 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L253 | `    # Mapea salida a nombre de clase.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L254 | `    return {label: float(prob) for label, prob in zip(CLASSES, probabilities)}` | Retorna un valor al llamador como resultado explícito de la función.
+- L255 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L256 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L257 | `def _decode_rgb_image(payload: DrowsinessImageRequest) -> np.ndarray:` | Declara la función `_decode_rgb_image` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L258 | `    """Decodifica imagen RGB desde base64 o ruta local."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L259 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L260 | `    # Import local de TensorFlow para decode de imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L261 | `    import tensorflow as tf  # type: ignore` | Importa dependencias del módulo: tensorflow as tf  # type: ignore.
+- L262 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L263 | `    # Caso base64.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L264 | `    if payload.image_b64:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L265 | `        raw_bytes = base64.b64decode(payload.image_b64)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L266 | `    # Caso ruta local.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L267 | `    elif payload.image_path:` | Define una condición alternativa dentro de la misma cadena condicional.
+- L268 | `        image_path = Path(payload.image_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L269 | `        if not image_path.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L270 | `            raise HTTPException(status_code=400, detail=f"No existe image_path: {image_path}")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L271 | `        raw_bytes = image_path.read_bytes()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L272 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L273 | `        raise HTTPException(status_code=400, detail="Debe enviar image_b64 o image_path.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L274 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L275 | `    # Decodifica a tensor RGB uint8.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L276 | `    image = tf.io.decode_image(raw_bytes, channels=3, expand_animations=False)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L277 | `    # Convierte a numpy para manipulación de recorte.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L278 | `    array = image.numpy()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L279 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L280 | `    # Validación de forma mínima.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L281 | `    if array.ndim != 3 or array.shape[2] != 3:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L282 | `        raise HTTPException(status_code=400, detail="No se pudo decodificar imagen RGB válida.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L283 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L284 | `    # Retorna arreglo HxWx3.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L285 | `    return array` | Retorna un valor al llamador como resultado explícito de la función.
+- L286 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L287 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L288 | `def _crop_face(image: np.ndarray, face_bbox: List[float] | None) -> np.ndarray:` | Declara la función `_crop_face` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L289 | `    """Recorta rostro principal según bbox; fallback a imagen completa."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L290 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L291 | `    # Si no hay bbox, usa imagen completa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L292 | `    if not face_bbox or len(face_bbox) != 4:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L293 | `        return image` | Retorna un valor al llamador como resultado explícito de la función.
+- L294 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L295 | `    # Dimensiones de imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L296 | `    height, width = image.shape[:2]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L297 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L298 | `    # Extrae coordenadas y aplica redondeo seguro.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L299 | `    x1, y1, x2, y2 = [int(round(value)) for value in face_bbox]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L300 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L301 | `    # Clampea coordenadas al borde de imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L302 | `    x1 = max(0, min(x1, width - 1))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L303 | `    y1 = max(0, min(y1, height - 1))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L304 | `    x2 = max(0, min(x2, width))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L305 | `    y2 = max(0, min(y2, height))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L306 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L307 | `    # Si bbox inválido, usa imagen completa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L308 | `    if x2 <= x1 or y2 <= y1:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L309 | `        return image` | Retorna un valor al llamador como resultado explícito de la función.
+- L310 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L311 | `    # Recorta región facial.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L312 | `    crop = image[y1:y2, x1:x2]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L313 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L314 | `    # Si recorte sale vacío por alguna razón, usa imagen completa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L315 | `    if crop.size == 0:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L316 | `        return image` | Retorna un valor al llamador como resultado explícito de la función.
+- L317 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L318 | `    # Retorna recorte válido.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L319 | `    return crop` | Retorna un valor al llamador como resultado explícito de la función.
+- L320 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L321 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L322 | `def _softmax(values: np.ndarray) -> np.ndarray:` | Declara la función `_softmax` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L323 | `    """Softmax numéricamente estable para fallback de normalización."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L324 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L325 | `    # Resta máximo para estabilidad numérica.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L326 | `    shifted = values - np.max(values)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L327 | `    exp_values = np.exp(shifted)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L328 | `    return exp_values / np.sum(exp_values)` | Retorna un valor al llamador como resultado explícito de la función.
+- L329 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L330 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L331 | `def _predict_drowsiness_image(face_crop: np.ndarray) -> Dict[str, float]:` | Declara la función `_predict_drowsiness_image` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L332 | `    """Predice probabilidades de somnolencia desde imagen de rostro."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L333 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L334 | `    # Asegura carga del modelo visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L335 | `    _load_drowsiness_model_once()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L336 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L337 | `    # Si no hay modelo, retorna distribución heurística base.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L338 | `    if _DROWSINESS_MODEL is False:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L339 | `        return {"alert": 0.60, "yawning": 0.25, "microsleep": 0.15}` | Retorna un valor al llamador como resultado explícito de la función.
+- L340 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L341 | `    # Import local de TensorFlow para preprocesamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L342 | `    import tensorflow as tf  # type: ignore` | Importa dependencias del módulo: tensorflow as tf  # type: ignore.
+- L343 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L344 | `    # Convierte recorte a tensor float32.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L345 | `    tensor = tf.convert_to_tensor(face_crop, dtype=tf.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L346 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L347 | `    # Redimensiona al tamaño esperado del modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L348 | `    target_h, target_w = _DROWSINESS_INPUT_SIZE` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L349 | `    tensor = tf.image.resize(tensor, (target_h, target_w))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L350 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L351 | `    # Preprocesado MobileNetV2 (mismo usado en entrenamiento).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L352 | `    tensor = tf.keras.applications.mobilenet_v2.preprocess_input(tensor)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L353 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L354 | `    # Crea batch de tamaño 1.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L355 | `    batch = tf.expand_dims(tensor, axis=0)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L356 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L357 | `    # Predice con modelo Keras.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L358 | `    raw = _DROWSINESS_MODEL(batch, training=False).numpy().reshape(-1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L359 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L360 | `    # Si salida no parece distribución válida, normaliza con softmax.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L361 | `    if np.any(raw < 0.0) or not np.isclose(np.sum(raw), 1.0, atol=1e-2):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L362 | `        probs = _softmax(raw.astype(np.float64)).astype(np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L363 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L364 | `        probs = raw.astype(np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L365 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L366 | `    # Ajusta nombres de clases si no coincide cantidad esperada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L367 | `    if len(_DROWSINESS_CLASS_NAMES) != len(probs):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L368 | `        class_names = [f"class_{index}" for index in range(len(probs))]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L369 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L370 | `        class_names = _DROWSINESS_CLASS_NAMES` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L371 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L372 | `    # Retorna mapa clase -> probabilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L373 | `    return {name: float(prob) for name, prob in zip(class_names, probs)}` | Retorna un valor al llamador como resultado explícito de la función.
+- L374 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L375 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L376 | `def _fuse_drowsiness_signals(payload: DrowsinessImageRequest, class_probabilities: Dict[str, float]) -> Tuple[str, float, str, float, float, Dict[str, float]]:` | Declara la función `_fuse_drowsiness_signals` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L377 | `    """Fusiona probabilidad de red visual con señales EAR/estado de visión."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L378 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L379 | `    # Estado principal del modelo visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L380 | `    model_state = max(class_probabilities, key=class_probabilities.get)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L381 | `    model_confidence = float(class_probabilities[model_state])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L382 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L383 | `    # Probabilidades principales con fallback seguro.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L384 | `    p_alert = float(class_probabilities.get("alert", 0.0))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L385 | `    p_yawning = float(class_probabilities.get("yawning", 0.0))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L386 | `    p_microsleep = float(class_probabilities.get("microsleep", 0.0))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L387 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L388 | `    # Componente de riesgo proveniente del modelo visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L389 | `    component_model = 0.05 * p_alert + 0.55 * p_yawning + 0.90 * p_microsleep` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L390 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L391 | `    # Componente por duración de ojos cerrados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L392 | `    closed_duration = float(payload.closed_duration or 0.0)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L393 | `    component_duration = min(closed_duration / 3.0, 1.0) * 0.40` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L394 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L395 | `    # Componente por estado discreto de face_service.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L396 | `    vision_state = str(payload.vision_state or "").upper().strip()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L397 | `    if vision_state == "SOMNOLENT":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L398 | `        component_vision_state = 0.35` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L399 | `    elif vision_state == "EYES_CLOSED":` | Define una condición alternativa dentro de la misma cadena condicional.
+- L400 | `        component_vision_state = 0.20` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L401 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L402 | `        component_vision_state = 0.0` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L403 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L404 | `    # Componente por EAR respecto a umbral dinámico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L405 | `    avg_ear = payload.avg_ear` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L406 | `    threshold = payload.threshold` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L407 | `    if avg_ear is not None and threshold is not None and avg_ear < threshold:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L408 | `        component_ear = 0.10` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L409 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L410 | `        component_ear = 0.0` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L411 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L412 | `    # Riesgo total acotado a [0, 1].` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L413 | `    risk_score = float(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L414 | `        np.clip(component_model + component_duration + component_vision_state + component_ear, 0.0, 1.0)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L415 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L416 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L417 | `    # Mapeo de riesgo a estado final.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L418 | `    if risk_score >= 0.75:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L419 | `        state = "SOMNOLENT"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L420 | `        confidence = risk_score` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L421 | `    elif risk_score >= 0.45:` | Define una condición alternativa dentro de la misma cadena condicional.
+- L422 | `        state = "DROWSY_WARNING"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L423 | `        confidence = risk_score` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L424 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L425 | `        state = "ALERT"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L426 | `        confidence = float(1.0 - risk_score)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L427 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L428 | `    # Desglose de contribuciones para inspección.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L429 | `    components = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L430 | `        "model": float(component_model),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L431 | `        "closed_duration": float(component_duration),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L432 | `        "vision_state": float(component_vision_state),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L433 | `        "ear_threshold": float(component_ear),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L434 | `    }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L435 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L436 | `    # Retorna resultados de fusión completos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L437 | `    return state, confidence, model_state, model_confidence, risk_score, components` | Retorna un valor al llamador como resultado explícito de la función.
+- L438 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L439 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L440 | `@app.get("/health", response_model=HealthResponse)` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L441 | `def health() -> HealthResponse:` | Declara la función `health` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L442 | `    """Health check del servicio TF."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L443 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L444 | `    # Respuesta estándar de disponibilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L445 | `    return HealthResponse(service="tf_service", status="ok", timestamp_utc=utc_now_iso())` | Retorna un valor al llamador como resultado explícito de la función.
+- L446 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L447 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L448 | `@app.post("/predict/fusion", response_model=FusionResponse)` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L449 | `def predict_fusion(payload: FusionRequest) -> FusionResponse:` | Declara la función `predict_fusion` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L450 | `    """Predice estado multimodal tabular (visión/voz/biometría)."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L451 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L452 | `    # Fusiona features de entrada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L453 | `    merged_features = _flatten_features(payload)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L454 | `    # Obtiene probabilidades por clase del modelo tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L455 | `    class_probabilities = _model_predict(merged_features)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L456 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L457 | `    # Selecciona clase de mayor probabilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L458 | `    state = max(class_probabilities, key=class_probabilities.get)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L459 | `    confidence = float(class_probabilities[state])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L460 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L461 | `    # Retorna respuesta del endpoint multimodal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L462 | `    return FusionResponse(` | Retorna un valor al llamador como resultado explícito de la función.
+- L463 | `        state=state,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L464 | `        confidence=confidence,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L465 | `        class_probabilities=class_probabilities,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L466 | `        timestamp_utc=utc_now_iso(),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L467 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L468 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L469 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L470 | `@app.post("/predict/drowsiness_image", response_model=DrowsinessResponse)` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L471 | `def predict_drowsiness_image(payload: DrowsinessImageRequest) -> DrowsinessResponse:` | Declara la función `predict_drowsiness_image` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L472 | `    """Predice somnolencia visual (alert/yawning/microsleep) y fusiona con EAR."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L473 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L474 | `    # Decodifica imagen RGB de request.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L475 | `    image = _decode_rgb_image(payload)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L476 | `    # Recorta rostro principal si se proporcionó bbox.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L477 | `    face_crop = _crop_face(image, payload.face_bbox)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L478 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L479 | `    # Predice distribución de clases visuales con modelo entrenado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L480 | `    class_probabilities = _predict_drowsiness_image(face_crop)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L481 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L482 | `    # Fusiona modelo visual con señales EAR/estado de visión.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L483 | `    state, confidence, model_state, model_confidence, risk_score, components = _fuse_drowsiness_signals(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L484 | `        payload, class_probabilities` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L485 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L486 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L487 | `    # Retorna salida completa de somnolencia fusionada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L488 | `    return DrowsinessResponse(` | Retorna un valor al llamador como resultado explícito de la función.
+- L489 | `        state=state,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L490 | `        confidence=float(confidence),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L491 | `        model_state=model_state,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L492 | `        model_confidence=float(model_confidence),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L493 | `        class_probabilities=class_probabilities,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L494 | `        risk_score=float(risk_score),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L495 | `        components=components,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L496 | `        timestamp_utc=utc_now_iso(),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L497 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

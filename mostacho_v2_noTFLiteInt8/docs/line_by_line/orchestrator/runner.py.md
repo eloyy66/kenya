@@ -1,0 +1,119 @@
+# Comentarios Línea por Línea: `orchestrator/runner.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/orchestrator/runner.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Orquestador: une vision (InsightFace), voz y biometria contra servicio TF."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para CLI simple.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# base64 para enviar imagen por HTTP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import base64` | Importa dependencias del módulo: base64.
+- L9 | `# json para imprimir salida legible.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `import json` | Importa dependencias del módulo: json.
+- L11 | `# Path para rutas de archivos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L12 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L13 | `# typing para contratos explícitos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L14 | `from typing import Any, Dict` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `# httpx para cliente HTTP síncrono.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L17 | `import httpx` | Importa dependencias del módulo: httpx.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `# Extractores locales de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `from mostacho.features.voice import extract_voice_features` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L21 | `from mostacho.features.biometrics import extract_biometrics_features` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L22 | `# Configuración central de endpoints.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L23 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L24 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L25 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L26 | `def _read_image_as_b64(image_path: Path) -> str:` | Declara la función `_read_image_as_b64` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L27 | `    """Lee un archivo de imagen y lo convierte a base64."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L28 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L29 | `    # Se leen bytes crudos del archivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L30 | `    raw = image_path.read_bytes()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L31 | `    # Se codifica a base64 para payload JSON.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L32 | `    return base64.b64encode(raw).decode("utf-8")` | Retorna un valor al llamador como resultado explícito de la función.
+- L33 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L34 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L35 | `def run_once(image_path: Path, audio_path: Path, biometrics_path: Path) -> Dict[str, Any]:` | Declara la función `run_once` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L36 | `    """Ejecuta una corrida de inferencia multimodal de extremo a extremo."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L37 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L38 | `    # Se cargan URLs de servicios desde settings/env.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L40 | `    # Timeout para llamadas HTTP de inferencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `    timeout = httpx.Timeout(30.0)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L42 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L43 | `    # Se crea cliente HTTP reutilizable.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L44 | `    with httpx.Client(timeout=timeout) as client:` | Abre un contexto administrado para garantizar adquisición/liberación segura de recursos.
+- L45 | `        # Se envía imagen al servicio de cara.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L46 | `        face_response = client.post(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L47 | `            f"{settings.face_service_url}/infer",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L48 | `            json={"image_b64": _read_image_as_b64(image_path)},` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L49 | `        )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L50 | `        # Se valida respuesta HTTP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `        face_response.raise_for_status()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L52 | `        # Se decodifica JSON de salida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L53 | `        face_payload = face_response.json()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L54 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L55 | `        # Se extraen features de voz desde archivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L56 | `        voice_features = extract_voice_features(audio_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L57 | `        # Se extraen features biométricas desde archivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L58 | `        biometric_features = extract_biometrics_features(biometrics_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L59 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L60 | `        # Se arma payload multimodal para el servicio TF.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L61 | `        fusion_payload = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L62 | `            "vision_features": face_payload.get("vision_features", {}),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L63 | `            "voice_features": voice_features,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L64 | `            "biometric_features": biometric_features,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L65 | `        }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L66 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L67 | `        # Se envía al servicio de fusión neuronal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L68 | `        tf_response = client.post(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L69 | `            f"{settings.tf_service_url}/predict/fusion",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L70 | `            json=fusion_payload,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L71 | `        )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L72 | `        # Se valida respuesta HTTP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L73 | `        tf_response.raise_for_status()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L74 | `        # Se parsea JSON final.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L75 | `        tf_payload = tf_response.json()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L76 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L77 | `    # Se retorna paquete completo para logging/diagnóstico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L78 | `    return {` | Retorna un valor al llamador como resultado explícito de la función.
+- L79 | `        "face": face_payload,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L80 | `        "voice_features": voice_features,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L81 | `        "biometric_features": biometric_features,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L82 | `        "fusion": tf_payload,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L83 | `    }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L84 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L85 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L86 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L87 | `    """Parsea argumentos CLI del orquestador."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L88 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L89 | `    # Parser con descripción de uso.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L90 | `    parser = argparse.ArgumentParser(description="Orquestador multimodal Mostacho")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L91 | `    # Ruta de imagen para análisis facial.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L92 | `    parser.add_argument("--image", required=True, type=Path, help="Ruta a imagen de entrada")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L93 | `    # Ruta de audio para features de voz.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L94 | `    parser.add_argument("--audio", required=True, type=Path, help="Ruta a audio de entrada")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L95 | `    # Ruta de biometría tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L96 | `    parser.add_argument("--biometrics", required=True, type=Path, help="Ruta a CSV/TXT biométrico")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L97 | `    # Se devuelven argumentos parseados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L98 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L99 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L100 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L101 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L102 | `    """Punto de entrada CLI para una inferencia integrada."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L103 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L104 | `    # Se leen argumentos del usuario.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L105 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L106 | `    # Se ejecuta corrida única.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L107 | `    result = run_once(args.image, args.audio, args.biometrics)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L108 | `    # Se imprime JSON legible para depuración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L109 | `    print(json.dumps(result, indent=2, ensure_ascii=True))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L110 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L111 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L112 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L113 | `    # Ejecución directa como script.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L114 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

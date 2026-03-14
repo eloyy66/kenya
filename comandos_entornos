@@ -1,0 +1,41 @@
+Mostacho V1 (dentro de mostacho -legacy-)
+
+(para el venv de tensorflow)
+uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
+
+(para el venv de insightface)
+uvicorn mostacho.services.face_api:app --host 127.0.0.1 --port 8001 --reload
+
+(para el venv orquestador)
+python -m mostacho.orchestrator.realtime_monitor --camera-backend AUTO --camera-index 0
+
+
+Mostacho V2 (dentro de mostacho_v2)
+
+sktf (entorno tensorflow)
+PYTHONPATH=/Users/usuario/kenya/mostacho_v2/src \
+  uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8001 --reload
+
+skif (entorno insightface)
+PYTHONPATH=/Users/usuario/kenya/mostacho_v2/src \
+  uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
+
+skorch (orquestador: opera con sktf y skif sin romperse por versiones incompatibles de numpy)
+PYTHONPATH=/Users/usuario/kenya/mostacho_v2/src \
+  python -m mostacho.orchestrator.realtime_monitor --camera-backend AUTO --camera-index 0 \
+  --face-every 2 --tf-every 2 --jpeg-quality 80 --crop-to-face
+
+
+###camera-index 0/1 según criterio###
+
+#--face-every 3 --tf-every 2 --jpeg-quality 75
+#para más rendimiento
+
+(con sktf)
+export MOSTACHO_DROWSINESS_TFLITE=/Users/usuario/kenya/mostacho_v2/artifacts/models/drowsiness_vision_int8.tflite
+uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
+#Correr modelo MobileNetv2 migrado a TFLite INT8 para Android NNAPI (en macOS corre a ~30-40fps estables)
+
+unset MOSTACHO_DROWSINESS_TFLITE
+uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
+#Volver al modelo original (~60fps)

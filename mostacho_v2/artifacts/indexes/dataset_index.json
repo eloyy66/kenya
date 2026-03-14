@@ -1,0 +1,107 @@
+{
+  "vision": {
+    "name": "vision",
+    "total_files": 109484,
+    "labels": {
+      "DrivImages": 606,
+      "Angry": 10148,
+      "Fear": 9732,
+      "Happy": 18439,
+      "Sad": 12553,
+      "Suprise": 8227,
+      "angry": 5920,
+      "disgust": 5920,
+      "fear": 5920,
+      "happy": 11398,
+      "neutral": 8166,
+      "sad": 6535,
+      "surprise": 5920
+    },
+    "sample_files": [
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_001_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_002_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_003_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_004_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_005_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_006_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_007_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_008_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_009_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_010_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_011_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_012_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_013_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_014_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_015_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_016_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_017_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_018_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_019_f .jpg",
+      "artificialvision/DrivFace/DrivImages/20130529_01_Driv_020_f .jpg"
+    ]
+  },
+  "voice": {
+    "name": "voice",
+    "total_files": 7442,
+    "labels": {
+      "angry": 1271,
+      "disgust": 1271,
+      "fear": 1271,
+      "happy": 1271,
+      "neutral": 1087,
+      "sad": 1271
+    },
+    "sample_files": [
+      "audio/crema-d/1001_DFA_ANG_XX.wav",
+      "audio/crema-d/1001_DFA_DIS_XX.wav",
+      "audio/crema-d/1001_DFA_FEA_XX.wav",
+      "audio/crema-d/1001_DFA_HAP_XX.wav",
+      "audio/crema-d/1001_DFA_NEU_XX.wav",
+      "audio/crema-d/1001_DFA_SAD_XX.wav",
+      "audio/crema-d/1001_IEO_ANG_HI.wav",
+      "audio/crema-d/1001_IEO_ANG_LO.wav",
+      "audio/crema-d/1001_IEO_ANG_MD.wav",
+      "audio/crema-d/1001_IEO_DIS_HI.wav",
+      "audio/crema-d/1001_IEO_DIS_LO.wav",
+      "audio/crema-d/1001_IEO_DIS_MD.wav",
+      "audio/crema-d/1001_IEO_FEA_HI.wav",
+      "audio/crema-d/1001_IEO_FEA_LO.wav",
+      "audio/crema-d/1001_IEO_FEA_MD.wav",
+      "audio/crema-d/1001_IEO_HAP_HI.wav",
+      "audio/crema-d/1001_IEO_HAP_LO.wav",
+      "audio/crema-d/1001_IEO_HAP_MD.wav",
+      "audio/crema-d/1001_IEO_NEU_XX.wav",
+      "audio/crema-d/1001_IEO_SAD_HI.wav"
+    ]
+  },
+  "biometrics": {
+    "name": "biometrics",
+    "total_files": 1290,
+    "labels": {
+      "wesad": 684,
+      "swell": 606
+    },
+    "sample_files": [
+      "biometrics/WESAD/S10/S10.pkl",
+      "biometrics/WESAD/S10/S10_E4_Data.zip",
+      "biometrics/WESAD/S10/S10_quest.csv",
+      "biometrics/WESAD/S10/S10_readme.txt",
+      "biometrics/WESAD/S10/S10_respiban.txt",
+      "biometrics/WESAD/S11/S11.pkl",
+      "biometrics/WESAD/S11/S11_E4_Data.zip",
+      "biometrics/WESAD/S11/S11_quest.csv",
+      "biometrics/WESAD/S11/S11_readme.txt",
+      "biometrics/WESAD/S11/S11_respiban.txt",
+      "biometrics/WESAD/S13/S13.pkl",
+      "biometrics/WESAD/S13/S13_E4_Data.zip",
+      "biometrics/WESAD/S13/S13_quest.csv",
+      "biometrics/WESAD/S13/S13_readme.txt",
+      "biometrics/WESAD/S13/S13_respiban.txt",
+      "biometrics/WESAD/S14/S14.pkl",
+      "biometrics/WESAD/S14/S14_E4_Data.zip",
+      "biometrics/WESAD/S14/S14_quest.csv",
+      "biometrics/WESAD/S14/S14_readme.txt",
+      "biometrics/WESAD/S14/S14_respiban.txt"
+    ]
+  }
+}
