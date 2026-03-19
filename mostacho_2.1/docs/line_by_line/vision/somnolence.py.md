@@ -1,0 +1,191 @@
+# Comentarios Línea por Línea: `vision/somnolence.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/vision/somnolence.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Lógica de somnolencia basada en EAR y duración de ojos cerrados."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# time provee reloj monotónico para duraciones robustas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import time` | Importa dependencias del módulo: time.
+- L7 | `# deque mantiene ventana deslizante de EAR.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `from collections import deque` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L9 | `# typing para contratos explícitos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from typing import Dict` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L12 | `# numpy se usa para estadística de ventana.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L13 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L14 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `class SomnolenceDetector:` | Declara la clase `SomnolenceDetector` y su contrato de comportamiento dentro del módulo.
+- L17 | `    """Detecta estados visuales de atención/somnolencia usando EAR."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `    def __init__(` | Declara la función `__init__` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L20 | `        self,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L21 | `        window_size: int = 5,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L22 | `        closed_seconds: float = 3.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L23 | `        calibration_seconds: float = 2.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L24 | `        threshold_offset: float = 0.04,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L25 | `        min_threshold: float = 0.15,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L26 | `    ) -> None:` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L27 | `        # Tamaño de ventana de suavizado de EAR.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L28 | `        self.window_size = window_size` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L29 | `        # Tiempo continuo mínimo de ojos cerrados para somnolencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L30 | `        self.closed_seconds = closed_seconds` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L31 | `        # Duración de calibración inicial del baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L32 | `        self.calibration_seconds = calibration_seconds` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L33 | `        # Desplazamiento respecto al baseline para umbral dinámico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L34 | `        self.threshold_offset = threshold_offset` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L35 | `        # Umbral mínimo de seguridad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L36 | `        self.min_threshold = min_threshold` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L37 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L38 | `        # Buffer de EAR reciente para media móvil.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `        self.ear_window: deque[float] = deque(maxlen=window_size)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L40 | `        # Inicio del periodo de ojos cerrados continuo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `        self.closed_start: float | None = None` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L42 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L43 | `        # Estado interno de calibración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L44 | `        self.calibration_start: float | None = None` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L45 | `        self.calibration_ears: list[float] = []` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L46 | `        self.baseline_ear: float | None = None` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L47 | `        self.manual_threshold: float | None = None` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L48 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L49 | `    def reset_calibration(self) -> None:` | Declara la función `reset_calibration` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L50 | `        """Reinicia calibración, baseline y umbral manual."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L51 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L52 | `        # Limpia temporizador de calibración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L53 | `        self.calibration_start = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L54 | `        # Limpia histórico de EAR de calibración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L55 | `        self.calibration_ears = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L56 | `        # Elimina baseline previo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `        self.baseline_ear = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L58 | `        # Elimina ajuste manual previo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L59 | `        self.manual_threshold = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L60 | `        # Reinicia contador de ojos cerrados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L61 | `        self.closed_start = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L62 | `        # Limpia ventana de suavizado para empezar limpio.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L63 | `        self.ear_window.clear()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L64 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L65 | `    def adjust_threshold(self, delta: float) -> float:` | Declara la función `adjust_threshold` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L66 | `        """Ajusta umbral manual de detección y retorna nuevo valor."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L67 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L68 | `        # Si no existe umbral manual, inicializa desde baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L69 | `        if self.manual_threshold is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L70 | `            base = self.baseline_ear or 0.2` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L71 | `            self.manual_threshold = max(self.min_threshold, base - self.threshold_offset)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L72 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L73 | `        # Se aplica delta acotado para evitar valores extremos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L74 | `        self.manual_threshold = float(np.clip(self.manual_threshold + delta, 0.10, 0.35))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L75 | `        # Se retorna valor actualizado para UI/log.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L76 | `        return self.manual_threshold` | Retorna un valor al llamador como resultado explícito de la función.
+- L77 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L78 | `    def _dynamic_threshold(self) -> float | None:` | Declara la función `_dynamic_threshold` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L79 | `        """Retorna umbral dinámico efectivo (manual o por baseline)."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L80 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L81 | `        # Prioridad al umbral manual si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L82 | `        if self.manual_threshold is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L83 | `            return self.manual_threshold` | Retorna un valor al llamador como resultado explícito de la función.
+- L84 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L85 | `        # Si no hay baseline aún, no hay umbral válido.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L86 | `        if self.baseline_ear is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L87 | `            return None` | Retorna un valor al llamador como resultado explícito de la función.
+- L88 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L89 | `        # Umbral derivado de baseline con mínimo de seguridad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L90 | `        return max(self.min_threshold, self.baseline_ear - self.threshold_offset)` | Retorna un valor al llamador como resultado explícito de la función.
+- L91 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L92 | `    def update(self, ear_value: float, now: float | None = None) -> Dict[str, float | str | Dict[str, float] | None]:` | Declara la función `update` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L93 | `        """Actualiza estado con nuevo EAR y retorna métricas de visión."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L94 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L95 | `        # Si no se pasa tiempo, se usa reloj monotónico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L96 | `        if now is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L97 | `            now = time.monotonic()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L98 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L99 | `        # Se agrega muestra actual al buffer deslizante.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L100 | `        self.ear_window.append(float(ear_value))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L101 | `        # Se calcula EAR suavizado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L102 | `        avg_ear = float(np.mean(self.ear_window))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L103 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L104 | `        # Etapa de calibración inicial hasta fijar baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L105 | `        if self.baseline_ear is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L106 | `            # Si es primera muestra, marca inicio de calibración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L107 | `            if self.calibration_start is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L108 | `                self.calibration_start = now` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L109 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L110 | `            # Acumula EAR de calibración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L111 | `            self.calibration_ears.append(avg_ear)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L112 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L113 | `            # Cuando se cumple tiempo mínimo y muestras suficientes, fija baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L114 | `            elapsed = now - self.calibration_start` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L115 | `            if elapsed >= self.calibration_seconds and len(self.calibration_ears) >= 5:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L116 | `                self.baseline_ear = float(np.median(self.calibration_ears))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L117 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L118 | `            # Respuesta mientras calibra.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L119 | `            return {` | Retorna un valor al llamador como resultado explícito de la función.
+- L120 | `                "state": "CALIBRATING",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L121 | `                "confidence": 0.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L122 | `                "scores": {"CALIBRATING": 1.0},` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L123 | `                "avg_ear": avg_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L124 | `                "closed_duration": 0.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L125 | `                "threshold": None,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L126 | `                "baseline": self.baseline_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L127 | `            }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L128 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L129 | `        # Umbral efectivo actual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L130 | `        threshold = self._dynamic_threshold()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L131 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L132 | `        # Seguridad adicional: si algo raro sucede y no hay umbral.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L133 | `        if threshold is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L134 | `            return {` | Retorna un valor al llamador como resultado explícito de la función.
+- L135 | `                "state": "NO_THRESHOLD",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L136 | `                "confidence": 0.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L137 | `                "scores": {"NO_THRESHOLD": 1.0},` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L138 | `                "avg_ear": avg_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L139 | `                "closed_duration": 0.0,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L140 | `                "threshold": None,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L141 | `                "baseline": self.baseline_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L142 | `            }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L143 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L144 | `        # Determina estado visual según EAR frente a umbral.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L145 | `        if avg_ear < threshold:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L146 | `            # Inicia contador de cierre si aún no estaba cerrando.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L147 | `            if self.closed_start is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L148 | `                self.closed_start = now` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L149 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L150 | `            # Tiempo continuo de ojos cerrados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L151 | `            closed_duration = now - self.closed_start` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L152 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L153 | `            # Clasificación según duración acumulada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L154 | `            if closed_duration >= self.closed_seconds:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L155 | `                state = "SOMNOLENT"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L156 | `            else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L157 | `                state = "EYES_CLOSED"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L158 | `        else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L159 | `            # Reinicia contador cuando vuelve a abrir ojos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L160 | `            self.closed_start = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L161 | `            # Duración cerrados es cero.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L162 | `            closed_duration = 0.0` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L163 | `            # Estado atencional normal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L164 | `            state = "ATTENTIVE"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L165 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L166 | `        # Confianza heurística simple por estado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L167 | `        if state == "SOMNOLENT":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L168 | `            confidence = 0.9` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L169 | `        elif state == "EYES_CLOSED":` | Define una condición alternativa dentro de la misma cadena condicional.
+- L170 | `            confidence = 0.7` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L171 | `        else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L172 | `            confidence = 0.6` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L173 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L174 | `        # Formato de scores compatible con pipeline multimodal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L175 | `        scores = {state: 1.0}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L176 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L177 | `        # Retorna paquete completo de métricas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L178 | `        return {` | Retorna un valor al llamador como resultado explícito de la función.
+- L179 | `            "state": state,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L180 | `            "confidence": confidence,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L181 | `            "scores": scores,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L182 | `            "avg_ear": avg_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L183 | `            "closed_duration": float(closed_duration),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L184 | `            "threshold": float(threshold),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L185 | `            "baseline": self.baseline_ear,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L186 | `        }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).

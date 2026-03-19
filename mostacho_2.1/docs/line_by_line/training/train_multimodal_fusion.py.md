@@ -1,0 +1,176 @@
+# Comentarios Línea por Línea: `training/train_multimodal_fusion.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/training/train_multimodal_fusion.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Entrena modelo de fusión multimodal para el servicio TensorFlow."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para parámetros por consola.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# json para guardar orden de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import json` | Importa dependencias del módulo: json.
+- L9 | `# Path para rutas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L12 | `# numpy para manipulación de arrays.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L13 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L14 | `# tensorflow para red de fusión.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L15 | `import tensorflow as tf` | Importa dependencias del módulo: tensorflow as tf.
+- L16 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L17 | `# settings globales del proyecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L18 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L19 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L20 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L21 | `# Clases objetivo del sistema multimodal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `CLASSES = ["alert", "somnolent", "stressed", "distracted"]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L23 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L24 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L25 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L26 | `    """Argumentos del script de entrenamiento de fusión."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L27 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L28 | `    # Parser CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L29 | `    parser = argparse.ArgumentParser(description="Entrena modelo de fusión multimodal")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L30 | `    # Ruta opcional a CSV de entrenamiento supervisado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L31 | `    parser.add_argument(` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L32 | `        "--train-csv",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L33 | `        type=Path,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L34 | `        default=None,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L35 | `        help="CSV con columnas de features y columna \`label\`",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L36 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L37 | `    # Épocas de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L38 | `    parser.add_argument("--epochs", type=int, default=25, help="Numero de epocas")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L39 | `    # Batch size.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L40 | `    parser.add_argument("--batch-size", type=int, default=64, help="Batch size")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L41 | `    # Retorno de argumentos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L42 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L43 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L44 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L45 | `def _synthetic_dataset() -> tuple[np.ndarray, np.ndarray, list[str]]:` | Declara la función `_synthetic_dataset` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L46 | `    """Genera dataset sintético de respaldo para dejar pipeline funcional."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L47 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L48 | `    # Orden estable de features mínimas esperadas por el orquestador.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L49 | `    feature_order = [` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L50 | `        "vision_face_count",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L51 | `        "vision_avg_score",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L52 | `        "vision_primary_face_area_ratio",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L53 | `        "voice_rms_mean",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L54 | `        "voice_rms_std",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L55 | `        "voice_zcr_mean",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L56 | `        "voice_spectral_centroid_mean",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L57 | `        "voice_duration_sec",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L58 | `        "bio_available",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L59 | `        "bio_num_rows",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L60 | `    ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L61 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L62 | `    # Semilla fija para reproducibilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L63 | `    rng = np.random.default_rng(42)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L64 | `    # Número de muestras sintéticas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L65 | `    n = 1200` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L66 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L67 | `    # Matriz base aleatoria controlada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L68 | `    x = rng.normal(size=(n, len(feature_order))).astype(np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L69 | `    # Se fuerzan rangos más realistas para algunas features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L70 | `    x[:, 0] = np.clip(rng.normal(loc=0.9, scale=0.4, size=n), 0.0, 3.0)  # face_count` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L71 | `    x[:, 1] = np.clip(rng.normal(loc=0.7, scale=0.2, size=n), 0.0, 1.0)  # avg_score` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L72 | `    x[:, 2] = np.clip(rng.normal(loc=0.15, scale=0.06, size=n), 0.0, 1.0)  # face_area_ratio` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L73 | `    x[:, 3] = np.clip(rng.normal(loc=0.05, scale=0.03, size=n), 0.0, 1.0)  # rms_mean` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L74 | `    x[:, 8] = np.clip(rng.normal(loc=0.8, scale=0.3, size=n), 0.0, 1.0)  # bio_available` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L75 | `    x[:, 9] = np.clip(rng.normal(loc=700.0, scale=300.0, size=n), 0.0, 5000.0)  # bio_num_rows` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L76 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L77 | `    # Etiqueta sintética con reglas para clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L78 | `    y = np.zeros((n,), dtype=np.int32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L79 | `    y[(x[:, 0] < 0.4) | (x[:, 2] < 0.08)] = 3  # distracted` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L80 | `    y[x[:, 3] < 0.02] = 1  # somnolent` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L81 | `    y[(x[:, 8] > 0.7) & (x[:, 9] > 1200)] = 2  # stressed` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L82 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L83 | `    # Se devuelve dataset sintético.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L84 | `    return x, y, feature_order` | Retorna un valor al llamador como resultado explícito de la función.
+- L85 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L86 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L87 | `def _load_csv_dataset(csv_path: Path) -> tuple[np.ndarray, np.ndarray, list[str]]:` | Declara la función `_load_csv_dataset` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L88 | `    """Carga dataset real desde CSV con columna \`label\`."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L89 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L90 | `    # Import local para minimizar dependencia cuando no se usa CSV real.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L91 | `    import pandas as pd` | Importa dependencias del módulo: pandas as pd.
+- L92 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L93 | `    # Se lee CSV completo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L94 | `    frame = pd.read_csv(csv_path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L95 | `    # Validación mínima de columna objetivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L96 | `    if "label" not in frame.columns:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L97 | `        raise ValueError("El CSV debe incluir columna 'label'.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L98 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L99 | `    # Se extraen nombres de features excluyendo label.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L100 | `    feature_order = [col for col in frame.columns if col != "label"]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L101 | `    # Matriz numérica X.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L102 | `    x = frame[feature_order].to_numpy(dtype=np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L103 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L104 | `    # Mapeo de etiquetas textuales a índice.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L105 | `    label_to_index = {name: idx for idx, name in enumerate(CLASSES)}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L106 | `    # Vector y codificado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L107 | `    y = frame["label"].map(label_to_index).fillna(0).to_numpy(dtype=np.int32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L108 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L109 | `    # Retorno de dataset real.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L110 | `    return x, y, feature_order` | Retorna un valor al llamador como resultado explícito de la función.
+- L111 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L112 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L113 | `def build_model(num_features: int) -> tf.keras.Model:` | Declara la función `build_model` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L114 | `    """Construye red densa para clasificación multimodal."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L115 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L116 | `    # Entrada tabular de features fusionadas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L117 | `    inputs = tf.keras.Input(shape=(num_features,))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L118 | `    # Bloque denso principal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L119 | `    x = tf.keras.layers.Dense(128, activation="relu")(inputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L120 | `    # Dropout para regularización.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L121 | `    x = tf.keras.layers.Dropout(0.25)(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L122 | `    # Segundo bloque denso.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L123 | `    x = tf.keras.layers.Dense(64, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L124 | `    # Salida softmax con 4 clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L125 | `    outputs = tf.keras.layers.Dense(len(CLASSES), activation="softmax")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L126 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L127 | `    # Modelo compilado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L128 | `    model = tf.keras.Model(inputs=inputs, outputs=outputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L129 | `    model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L130 | `    return model` | Retorna un valor al llamador como resultado explícito de la función.
+- L131 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L132 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L133 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L134 | `    """Entrena modelo de fusión y persiste artefactos para tf_service."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L135 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L136 | `    # Se parsean argumentos CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L137 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L138 | `    # Se cargan settings globales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L139 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L140 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L141 | `    # Si se pasa CSV real, se usa; de lo contrario se genera dataset sintético.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L142 | `    if args.train_csv is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L143 | `        x, y, feature_order = _load_csv_dataset(args.train_csv)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L144 | `    else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L145 | `        x, y, feature_order = _synthetic_dataset()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L146 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L147 | `    # Construcción de la red de fusión.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L148 | `    model = build_model(num_features=x.shape[1])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L149 | `    # Entrenamiento baseline.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L150 | `    model.fit(x, y, epochs=args.epochs, batch_size=args.batch_size, validation_split=0.2, verbose=1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L151 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L152 | `    # Se asegura carpeta de artefactos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L153 | `    output_dir = settings.artifacts_root / "models"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L154 | `    output_dir.mkdir(parents=True, exist_ok=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L155 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L156 | `    # Guardado del modelo para tf_service.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L157 | `    model_path = output_dir / "multimodal_fusion.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L158 | `    model.save(model_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L159 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L160 | `    # Guardado del orden de features consumido por tf_service.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L161 | `    feature_order_path = output_dir / "multimodal_feature_order.json"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L162 | `    feature_order_path.write_text(json.dumps(feature_order, indent=2, ensure_ascii=True), encoding="utf-8")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L163 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L164 | `    # Mensajes de confirmación.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L165 | `    print(f"Modelo de fusion guardado en: {model_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L166 | `    print(f"Orden de features guardado en: {feature_order_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L167 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L168 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L169 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L170 | `    # Entrada directa por CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L171 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

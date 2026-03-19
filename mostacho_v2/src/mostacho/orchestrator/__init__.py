@@ -1,1 +1,0 @@
-"""Subpaquete del orquestador multimodal."""

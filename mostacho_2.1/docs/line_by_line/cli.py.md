@@ -1,0 +1,71 @@
+# Comentarios Línea por Línea: `cli.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/cli.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""CLI utilitaria para indexado de datasets y tareas rápidas de proyecto."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para definir subcomandos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# json para salida legible en terminal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import json` | Importa dependencias del módulo: json.
+- L9 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L10 | `# indexador central de datasets.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L11 | `from mostacho.data.catalog import build_catalog, write_catalog_json` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L12 | `# settings globales para rutas de salida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L13 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L14 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `def build_parser() -> argparse.ArgumentParser:` | Declara la función `build_parser` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L17 | `    """Construye parser principal con subcomandos."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `    # Parser raíz.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `    parser = argparse.ArgumentParser(description="CLI de utilidades Mostacho")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L21 | `    # Registro de subcomandos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `    subparsers = parser.add_subparsers(dest="command", required=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L23 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L24 | `    # Subcomando para indexar datasets.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L25 | `    index_cmd = subparsers.add_parser("index-db", help="Indexa datasets de db/")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L26 | `    # Flag opcional para escribir JSON en artifacts.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L27 | `    index_cmd.add_argument("--write-json", action="store_true", help="Escribe dataset_index.json")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L28 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L29 | `    # Se retorna parser completo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L30 | `    return parser` | Retorna un valor al llamador como resultado explícito de la función.
+- L31 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L32 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L33 | `def cmd_index_db(write_json: bool) -> None:` | Declara la función `cmd_index_db` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L34 | `    """Ejecuta indexado de dataset y emite resumen por consola/archivo."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L35 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L36 | `    # Se construye catálogo desde rutas actuales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L37 | `    catalog = build_catalog()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L38 | `    # Se imprime resumen por consola en JSON.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `    print(json.dumps({` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L40 | `        "vision": catalog.vision.__dict__,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L41 | `        "voice": catalog.voice.__dict__,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L42 | `        "biometrics": catalog.biometrics.__dict__,` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L43 | `    }, indent=2, ensure_ascii=True))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L44 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L45 | `    # Si se solicitó persistencia, se guarda índice en artifacts.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L46 | `    if write_json:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L47 | `        settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L48 | `        output_path = settings.artifacts_root / "indexes" / "dataset_index.json"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L49 | `        write_catalog_json(output_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L50 | `        print(f"Indice guardado en: {output_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L51 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L52 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L53 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L54 | `    """Entrada principal de la CLI."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L55 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L56 | `    # Parseo de argumentos y subcomando.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `    args = build_parser().parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L58 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L59 | `    # Dispatch de subcomandos soportados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L60 | `    if args.command == "index-db":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L61 | `        cmd_index_db(write_json=args.write_json)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L62 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L63 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L64 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L65 | `    # Ejecuta CLI cuando se llama como módulo/script.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L66 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

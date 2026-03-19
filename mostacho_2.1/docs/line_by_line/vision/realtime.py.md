@@ -1,0 +1,229 @@
+# Comentarios Línea por Línea: `vision/realtime.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/vision/realtime.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Runner en tiempo real (webcam) para la base visual de Mostacho."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para CLI local.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# time para cálculo de FPS.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import time` | Importa dependencias del módulo: time.
+- L9 | `# typing para tipos explícitos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from typing import Any` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L12 | `# numpy para manejo básico de arrays.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L13 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L14 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L15 | `# cámara multiplataforma y runtime visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L16 | `from mostacho.vision.camera import Camera, list_available_cameras` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L17 | `from mostacho.vision.runtime import VisionRuntime, VisionRuntimeConfig` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L20 | `def _load_cv2() -> Any:` | Declara la función `_load_cv2` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L21 | `    """Carga OpenCV de forma diferida para ejecución local."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L22 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L23 | `    # Import local de OpenCV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L24 | `    import cv2  # type: ignore` | Importa dependencias del módulo: cv2  # type: ignore.
+- L25 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L26 | `    # Retorna módulo cargado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L27 | `    return cv2` | Retorna un valor al llamador como resultado explícito de la función.
+- L28 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L29 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L30 | `def _create_face_app(detect_size: tuple[int, int]) -> Any:` | Declara la función `_create_face_app` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L31 | `    """Crea instancia FaceAnalysis para ejecución local en CPU."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L32 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L33 | `    # Import local de InsightFace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L34 | `    from insightface.app import FaceAnalysis  # type: ignore` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L35 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L36 | `    # Se crea app con módulos necesarios para detección y landmarks.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L37 | `    face_app = FaceAnalysis(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L38 | `        name="buffalo_l",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L39 | `        providers=["CPUExecutionProvider"],` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L40 | `        allowed_modules=["detection", "landmark_3d_68", "landmark_2d_106"],` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L41 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L42 | `    # Se prepara detector en CPU.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `    face_app.prepare(ctx_id=-1, det_size=detect_size)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L44 | `    return face_app` | Retorna un valor al llamador como resultado explícito de la función.
+- L45 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L46 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L47 | `def _draw_overlay(frame: np.ndarray, analysis: Any, fps: float) -> np.ndarray:` | Declara la función `_draw_overlay` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L48 | `    """Dibuja overlays de bbox, landmarks de ojos, estado y métricas."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L49 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L50 | `    # Se carga OpenCV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `    cv2 = _load_cv2()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L52 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L53 | `    # Copia de frame para dibujar encima sin alterar referencia original.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L54 | `    output = frame.copy()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L55 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L56 | `    # Dibuja cada rostro detectado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `    for detection in analysis.detections:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L58 | `        # Bounding box principal del rostro.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L59 | `        x1, y1, x2, y2 = [int(value) for value in detection.bbox]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L60 | `        cv2.rectangle(output, (x1, y1), (x2, y2), (0, 255, 0), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L61 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L62 | `        # Landmarks faciales generales (si existen).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L63 | `        for x, y in detection.landmarks:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L64 | `            cv2.circle(output, (int(x), int(y)), 1, (255, 180, 0), -1)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L65 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L66 | `        # Contorno de ojo izquierdo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L67 | `        for x, y in detection.left_eye:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L68 | `            cv2.circle(output, (int(x), int(y)), 2, (0, 255, 255), -1)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L69 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L70 | `        # Contorno de ojo derecho.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L71 | `        for x, y in detection.right_eye:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L72 | `            cv2.circle(output, (int(x), int(y)), 2, (0, 255, 255), -1)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L73 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L74 | `    # Color por estado visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L75 | `    color = (0, 255, 0)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L76 | `    if analysis.vision_state == "EYES_CLOSED":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L77 | `        color = (0, 165, 255)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L78 | `    elif analysis.vision_state == "SOMNOLENT":` | Define una condición alternativa dentro de la misma cadena condicional.
+- L79 | `        color = (0, 0, 255)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L80 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L81 | `    # Texto principal de estado visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L82 | `    cv2.putText(output, f"STATE: {analysis.vision_state}", (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.0, color, 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L83 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L84 | `    # Texto de EAR si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L85 | `    if analysis.avg_ear is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L86 | `        cv2.putText(output, f"EAR: {analysis.avg_ear:.3f}", (10, 60), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L87 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L88 | `    # Duración de ojos cerrados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L89 | `    cv2.putText(output, f"Closed: {analysis.closed_duration:.2f}s", (10, 90), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 255), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L90 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L91 | `    # Umbral actual si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L92 | `    if analysis.threshold is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L93 | `        cv2.putText(output, f"THR: {analysis.threshold:.3f}", (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (200, 200, 200), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L94 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L95 | `    # Baseline calibrado si existe.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L96 | `    if analysis.baseline is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L97 | `        cv2.putText(output, f"BASE: {analysis.baseline:.3f}", (10, 150), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (200, 200, 200), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L98 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L99 | `    # FPS en tiempo real.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L100 | `    cv2.putText(output, f"FPS: {fps:.1f}", (10, 180), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (255, 255, 0), 2)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L101 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L102 | `    # Se retorna frame anotado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L103 | `    return output` | Retorna un valor al llamador como resultado explícito de la función.
+- L104 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L105 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L106 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L107 | `    """Parsea argumentos de ejecución en tiempo real."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L108 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L109 | `    # Parser CLI de runner local.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L110 | `    parser = argparse.ArgumentParser(description="Mostacho Vision Realtime")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L111 | `    # Índice de cámara.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L112 | `    parser.add_argument("--camera-index", type=int, default=0, help="Indice de camara")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L113 | `    # Backend de cámara (AUTO recomendado).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L114 | `    parser.add_argument("--camera-backend", type=str, default="AUTO", help="AUTO|AVFOUNDATION|DSHOW|MSMF|V4L2")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L115 | `    # Ancho de frame.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L116 | `    parser.add_argument("--width", type=int, default=640, help="Ancho de captura")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L117 | `    # Alto de frame.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L118 | `    parser.add_argument("--height", type=int, default=360, help="Alto de captura")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L119 | `    # Tamaño de detección de InsightFace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L120 | `    parser.add_argument("--detect-width", type=int, default=320, help="Ancho de deteccion")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L121 | `    # Tamaño de detección de InsightFace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L122 | `    parser.add_argument("--detect-height", type=int, default=320, help="Alto de deteccion")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L123 | `    # Lista cámaras detectadas y termina.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L124 | `    parser.add_argument("--list-cameras", action="store_true", help="Lista cámaras disponibles y sale")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L125 | `    # Índice máximo a probar al listar cámaras.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L126 | `    parser.add_argument("--max-camera-index", type=int, default=10, help="Indice maximo a probar al listar cámaras")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L127 | `    # Retorna argumentos parseados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L128 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L129 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L130 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L131 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L132 | `    """Ejecuta pipeline visual local equivalente a la base de madebycodex."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L133 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L134 | `    # Carga argumentos de CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L135 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L136 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L137 | `    # Modo descubrimiento de cámaras sin iniciar inferencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L138 | `    if args.list_cameras:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L139 | `        cameras = list_available_cameras(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L140 | `            max_index=args.max_camera_index,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L141 | `            backend=args.camera_backend,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L142 | `            width=args.width,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L143 | `            height=args.height,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L144 | `        )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L145 | `        if not cameras:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L146 | `            print("No se detectaron camaras en el rango solicitado.")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L147 | `            return` | Finaliza la función y retorna `None` de forma explícita.
+- L148 | `        print("Camaras detectadas:")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L149 | `        for camera_index, backend_name in cameras:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L150 | `            print(f"  index={camera_index} backend={backend_name}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L151 | `        return` | Finaliza la función y retorna `None` de forma explícita.
+- L152 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L153 | `    # Carga OpenCV para captura y ventana.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L154 | `    cv2 = _load_cv2()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L155 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L156 | `    # Configuración del runtime visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L157 | `    config = VisionRuntimeConfig(detect_size=(args.detect_width, args.detect_height))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L158 | `    # Inicializa detector InsightFace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L159 | `    face_app = _create_face_app(config.detect_size)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L160 | `    # Inicializa runtime de análisis visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L161 | `    runtime = VisionRuntime(face_app=face_app, config=config)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L162 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L163 | `    # Inicializa cámara con backend AUTO o explícito.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L164 | `    camera = Camera(index=args.camera_index, backend=args.camera_backend, width=args.width, height=args.height)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L165 | `    if not camera.open():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L166 | `        raise RuntimeError("No se pudo abrir la camara en este equipo.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L167 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L168 | `    # Se descartan frames iniciales para estabilizar sensor.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L169 | `    camera.warmup(frames=10)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L170 | `    print(f"Camara abierta con backend: {camera.active_backend}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L171 | `    print("Controles: q=salir | u=subir umbral | j=bajar umbral | r=recalibrar")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L172 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L173 | `    # Inicializa contador de FPS.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L174 | `    previous_time = 0.0` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L175 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L176 | `    # Bucle principal de lectura + inferencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L177 | `    while True:` | Inicia un bucle `while` controlado por una condición de repetición.
+- L178 | `        # Captura frame actual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L179 | `        ok, frame = camera.read()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L180 | `        if not ok or frame is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L181 | `            break` | Interrumpe de inmediato el bucle actual.
+- L182 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L183 | `        # Analiza frame con runtime visual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L184 | `        analysis = runtime.analyze_image(frame, now=time.monotonic())` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L185 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L186 | `        # Cálculo de FPS instantáneo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L187 | `        current_time = time.time()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L188 | `        fps = 1.0 / (current_time - previous_time) if previous_time > 0 else 0.0` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L189 | `        previous_time = current_time` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L190 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L191 | `        # Dibuja overlays de depuración.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L192 | `        output = _draw_overlay(frame, analysis, fps)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L193 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L194 | `        # Muestra ventana principal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L195 | `        cv2.imshow("Mostacho Vision Realtime", output)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L196 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L197 | `        # Lee tecla para controles.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L198 | `        key = cv2.waitKey(1) & 0xFF` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L199 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L200 | `        # Salida del programa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L201 | `        if key == ord("q"):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L202 | `            break` | Interrumpe de inmediato el bucle actual.
+- L203 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L204 | `        # Ajuste de umbral hacia arriba.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L205 | `        if key == ord("u"):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L206 | `            runtime.adjust_threshold(0.01)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L207 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L208 | `        # Ajuste de umbral hacia abajo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L209 | `        if key == ord("j"):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L210 | `            runtime.adjust_threshold(-0.01)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L211 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L212 | `        # Recalibración completa.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L213 | `        if key == ord("r"):` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L214 | `            runtime.reset_calibration()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L215 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L216 | `    # Libera cámara al terminar.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L217 | `    camera.release()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L218 | `    # Cierra ventanas de OpenCV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L219 | `    cv2.destroyAllWindows()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L220 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L221 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L222 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L223 | `    # Entrada principal del script.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L224 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

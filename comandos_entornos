@@ -39,3 +39,26 @@ uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
 unset MOSTACHO_DROWSINESS_TFLITE
 uvicorn mostacho.services.tf_api:app --host 127.0.0.1 --port 8002 --reload
 #Volver al modelo original (~60fps)
+
+
+curl -s http://127.0.0.1:8002/predict/drowsiness_image \
+  -H "Content-Type: application/json" \
+  -d '{"image_path":"/Users/usuario/kenya/db/artificialvision/somnolent-db/<ALGUNA_IMAGEN>.jpg"}'
+# para correr el modelo desde una imagen de referencia
+
+
+
+
+export MOSTACHO_DROWSINESS_MICROSLEEP_MIN_PROB=0.50
+export MOSTACHO_DROWSINESS_WARN_THRESHOLD=0.45
+export MOSTACHO_DROWSINESS_MICROSLEEP_WEIGHT=0.80
+
+
+
+unset MOSTACHO_DROWSINESS_MICROSLEEP_MIN_PROB
+unset MOSTACHO_DROWSINESS_WARN_THRESHOLD
+unset MOSTACHO_DROWSINESS_MICROSLEEP_WEIGHT
+unset MOSTACHO_DROWSINESS_YAWNING_WEIGHT
+unset MOSTACHO_DROWSINESS_ALERT_WEIGHT
+unset MOSTACHO_DROWSINESS_SLEEP_THRESHOLD
+

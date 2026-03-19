@@ -1,0 +1,2 @@
+-r tf_service.txt
+opencv-python==4.10.0.84

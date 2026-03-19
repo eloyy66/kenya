@@ -1,0 +1,63 @@
+# Comentarios Línea por Línea: `settings.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/settings.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Configuracion centralizada para rutas y endpoints del proyecto."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# Se usa dataclass para mantener una configuracion tipada y facil de transportar.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `from dataclasses import dataclass` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L7 | `# Path facilita manejo robusto de rutas multiplataforma.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L9 | `# os permite leer variables de entorno sin dependencias externas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `import os` | Importa dependencias del módulo: os.
+- L11 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L12 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L13 | `@dataclass(frozen=True)` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L14 | `class Settings:` | Declara la clase `Settings` y su contrato de comportamiento dentro del módulo.
+- L15 | `    """Contenedor inmutable con rutas y parametros globales."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L16 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L17 | `    # Raiz del repositorio \`kenya\`.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L18 | `    repo_root: Path` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L19 | `    # Raiz de la carpeta \`mostacho\`.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `    mostacho_root: Path` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L21 | `    # Raiz de datasets compartidos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `    db_root: Path` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L23 | `    # Carpeta para artefactos de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L24 | `    artifacts_root: Path` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L25 | `    # Endpoint del servicio de InsightFace.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L26 | `    face_service_url: str` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L27 | `    # Endpoint del servicio de TensorFlow.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L28 | `    tf_service_url: str` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L29 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L30 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L31 | `def load_settings() -> Settings:` | Declara la función `load_settings` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L32 | `    """Carga configuracion desde entorno y aplica defaults razonables."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L33 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L34 | `    # Este archivo vive en \`mostacho/src/mostacho/settings.py\`.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L35 | `    current_file = Path(__file__).resolve()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L36 | `    # \`parents[3]\` apunta a la raiz del repo (\`kenya\`).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L37 | `    repo_root = Path(os.getenv("MOSTACHO_REPO_ROOT", str(current_file.parents[3])))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L38 | `    # \`mostacho\` cuelga directamente de la raiz del repo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `    mostacho_root = Path(os.getenv("MOSTACHO_ROOT", str(repo_root / "mostacho")))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L40 | `    # \`db\` tambien cuelga de la raiz del repo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `    db_root = Path(os.getenv("MOSTACHO_DB_ROOT", str(repo_root / "db")))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L42 | `    # Los artefactos se centralizan en \`mostacho/artifacts\`.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `    artifacts_root = Path(os.getenv("MOSTACHO_ARTIFACTS_ROOT", str(mostacho_root / "artifacts")))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L44 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L45 | `    # URL local por defecto del servicio de vision.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L46 | `    face_service_url = os.getenv("MOSTACHO_FACE_URL", "http://127.0.0.1:8001")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L47 | `    # URL local por defecto del servicio de fusion neuronal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L48 | `    tf_service_url = os.getenv("MOSTACHO_TF_URL", "http://127.0.0.1:8002")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L49 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L50 | `    # Se devuelve configuracion compacta e inmutable.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `    return Settings(` | Retorna un valor al llamador como resultado explícito de la función.
+- L52 | `        repo_root=repo_root,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L53 | `        mostacho_root=mostacho_root,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L54 | `        db_root=db_root,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L55 | `        artifacts_root=artifacts_root,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L56 | `        face_service_url=face_service_url,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L57 | `        tf_service_url=tf_service_url,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L58 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.

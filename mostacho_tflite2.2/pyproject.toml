@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mostacho-tflite2-2"
+version = "0.1.0"
+description = "Runtime local TFLite INT8 con InsightFace subprocess + TF worker unificado"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "Mostacho Team" }
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

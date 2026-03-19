@@ -1,0 +1,170 @@
+# Comentarios Línea por Línea: `vision/camera.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/vision/camera.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Capa de captura de cámara compatible con macOS, Windows y Linux."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# platform permite detectar sistema operativo en tiempo de ejecución.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import platform` | Importa dependencias del módulo: platform.
+- L7 | `# typing para tipos explícitos y mantenibles.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `from typing import Any, Iterable, List, Tuple` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L9 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L10 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L11 | `def _load_cv2() -> Any:` | Declara la función `_load_cv2` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L12 | `    """Carga OpenCV de forma diferida para reducir side-effects de import."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L13 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L14 | `    # Import local para evitar cargar OpenCV al importar el módulo completo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L15 | `    import cv2  # type: ignore` | Importa dependencias del módulo: cv2  # type: ignore.
+- L16 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L17 | `    # Retorna módulo OpenCV listo para usar.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L18 | `    return cv2` | Retorna un valor al llamador como resultado explícito de la función.
+- L19 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L20 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L21 | `def _backend_candidates(backend: str) -> List[Tuple[str, int | None]]:` | Declara la función `_backend_candidates` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L22 | `    """Resuelve lista ordenada de backends candidatos por plataforma."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L23 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L24 | `    # Se carga OpenCV para acceder a constantes CAP_*.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L25 | `    cv2 = _load_cv2()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L26 | `    # Se normaliza string de backend.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L27 | `    normalized = backend.strip().upper()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L28 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L29 | `    # Si el usuario fija backend explícito, se respeta y se agrega fallback default.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L30 | `    if normalized not in {"", "AUTO", "DEFAULT"}:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L31 | `        mapping = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L32 | `            "AVFOUNDATION": getattr(cv2, "CAP_AVFOUNDATION", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L33 | `            "DSHOW": getattr(cv2, "CAP_DSHOW", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L34 | `            "MSMF": getattr(cv2, "CAP_MSMF", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L35 | `            "V4L2": getattr(cv2, "CAP_V4L2", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L36 | `            "GSTREAMER": getattr(cv2, "CAP_GSTREAMER", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L37 | `        }` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L38 | `        selected = mapping.get(normalized)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L39 | `        if selected is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L40 | `            return [("DEFAULT", None)]` | Retorna un valor al llamador como resultado explícito de la función.
+- L41 | `        return [(normalized, selected), ("DEFAULT", None)]` | Retorna un valor al llamador como resultado explícito de la función.
+- L42 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L43 | `    # Detección de OS para orden de intentos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L44 | `    system_name = platform.system().lower()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L45 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L46 | `    # macOS: AVFoundation suele ser el backend correcto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L47 | `    if system_name == "darwin":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L48 | `        return [("AVFOUNDATION", getattr(cv2, "CAP_AVFOUNDATION", None)), ("DEFAULT", None)]` | Retorna un valor al llamador como resultado explícito de la función.
+- L49 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L50 | `    # Windows: DSHOW suele ser estable; MSMF como fallback.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L51 | `    if system_name == "windows":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L52 | `        return [` | Retorna un valor al llamador como resultado explícito de la función.
+- L53 | `            ("DSHOW", getattr(cv2, "CAP_DSHOW", None)),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L54 | `            ("MSMF", getattr(cv2, "CAP_MSMF", None)),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L55 | `            ("DEFAULT", None),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L56 | `        ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L57 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L58 | `    # Linux: V4L2 es opción primaria, luego default.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L59 | `    return [("V4L2", getattr(cv2, "CAP_V4L2", None)), ("DEFAULT", None)]` | Retorna un valor al llamador como resultado explícito de la función.
+- L60 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L61 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L62 | `class Camera:` | Declara la clase `Camera` y su contrato de comportamiento dentro del módulo.
+- L63 | `    """Encapsula captura de video con fallback automático de backend."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L64 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L65 | `    def __init__(self, index: int = 0, backend: str = "AUTO", width: int = 640, height: int = 360):` | Declara la función `__init__` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L66 | `        # Índice de dispositivo de cámara.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L67 | `        self.index = index` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L68 | `        # Nombre de backend preferido o AUTO.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L69 | `        self.backend = backend` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L70 | `        # Ancho esperado de captura.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L71 | `        self.width = width` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L72 | `        # Alto esperado de captura.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L73 | `        self.height = height` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L74 | `        # Objeto VideoCapture de OpenCV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L75 | `        self.cap: Any = None` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L76 | `        # Nombre del backend que finalmente abrió.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L77 | `        self.active_backend = "UNOPENED"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L78 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L79 | `    def open(self) -> bool:` | Declara la función `open` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L80 | `        """Abre la cámara probando backends en orden de compatibilidad."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L81 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L82 | `        # Se carga OpenCV cuando realmente se necesita abrir cámara.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L83 | `        cv2 = _load_cv2()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L84 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L85 | `        # Se recorre lista de backends candidatos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L86 | `        for backend_name, backend_code in _backend_candidates(self.backend):` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L87 | `            # Si el código de backend no existe en esta plataforma, se ignora.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L88 | `            if backend_name != "DEFAULT" and backend_code is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L89 | `                continue` | Salta al siguiente ciclo del bucle actual sin ejecutar el resto del cuerpo.
+- L90 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L91 | `            # Se intenta abrir cámara con backend específico.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L92 | `            if backend_name == "DEFAULT":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L93 | `                cap = cv2.VideoCapture(self.index)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L94 | `            else:` | Define la rama por defecto cuando ninguna condición previa se cumple.
+- L95 | `                cap = cv2.VideoCapture(self.index, backend_code)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L96 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L97 | `            # Si no abrió, se libera y se prueba siguiente backend.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L98 | `            if not cap.isOpened():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L99 | `                cap.release()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L100 | `                continue` | Salta al siguiente ciclo del bucle actual sin ejecutar el resto del cuerpo.
+- L101 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L102 | `            # Se fija resolución objetivo cuando aplica.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L103 | `            if self.width > 0:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L104 | `                cap.set(cv2.CAP_PROP_FRAME_WIDTH, float(self.width))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L105 | `            if self.height > 0:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L106 | `                cap.set(cv2.CAP_PROP_FRAME_HEIGHT, float(self.height))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L107 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L108 | `            # Se conserva captura abierta y backend ganador.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L109 | `            self.cap = cap` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L110 | `            self.active_backend = backend_name` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L111 | `            return True` | Retorna un valor al llamador como resultado explícito de la función.
+- L112 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L113 | `        # Si ningún backend abrió, se deja estado cerrado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L114 | `        self.cap = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L115 | `        self.active_backend = "FAILED"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L116 | `        return False` | Retorna un valor al llamador como resultado explícito de la función.
+- L117 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L118 | `    def warmup(self, frames: int = 10) -> None:` | Declara la función `warmup` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L119 | `        """Descarta frames iniciales para estabilizar exposición/foco."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L120 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L121 | `        # Si no hay cámara abierta, no hace nada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L122 | `        if self.cap is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L123 | `            return` | Finaliza la función y retorna `None` de forma explícita.
+- L124 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L125 | `        # Lee y descarta primeros frames.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L126 | `        for _ in range(max(frames, 0)):` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L127 | `            self.cap.read()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L128 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L129 | `    def read(self) -> tuple[bool, Any]:` | Declara la función `read` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L130 | `        """Lee frame actual de la cámara."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L131 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L132 | `        # Si no hay cámara abierta, retorna fallo seguro.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L133 | `        if self.cap is None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L134 | `            return False, None` | Retorna un valor al llamador como resultado explícito de la función.
+- L135 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L136 | `        # Delega en OpenCV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L137 | `        return self.cap.read()` | Retorna un valor al llamador como resultado explícito de la función.
+- L138 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L139 | `    def release(self) -> None:` | Declara la función `release` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L140 | `        """Libera el dispositivo de cámara."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L141 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L142 | `        # Si existe captura activa, se libera recurso.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L143 | `        if self.cap is not None:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L144 | `            self.cap.release()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L145 | `            self.cap = None` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L146 | `            self.active_backend = "UNOPENED"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L147 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L148 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L149 | `def list_available_cameras(max_index: int = 10, backend: str = "AUTO", width: int = 640, height: int = 360) -> List[Tuple[int, str]]:` | Declara la función `list_available_cameras` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L150 | `    """Descubre índices de cámara disponibles y backend efectivo por índice."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L151 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L152 | `    # Lista de resultados (indice, backend_efectivo).` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L153 | `    available: List[Tuple[int, str]] = []` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L154 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L155 | `    # Recorre rango de índices solicitado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L156 | `    for camera_index in range(max(0, int(max_index)) + 1):` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L157 | `        # Crea instancia temporal de cámara.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L158 | `        camera = Camera(index=camera_index, backend=backend, width=width, height=height)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L159 | `        # Si abre correctamente, agrega resultado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L160 | `        if camera.open():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L161 | `            available.append((camera_index, camera.active_backend))` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L162 | `            camera.release()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L163 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L164 | `    # Retorna lista de cámaras detectadas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L165 | `    return available` | Retorna un valor al llamador como resultado explícito de la función.

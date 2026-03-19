@@ -1,3 +1,8 @@
 db/
 .DS_Store
 .pycache_tmp/
+.pycache/
+__pycache__/
+.mplcache/
+*.pyc
+*.pyo

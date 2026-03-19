@@ -1,0 +1,238 @@
+# Comentarios Línea por Línea: `data/catalog.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/data/catalog.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Indexador de datasets para vision, voz y biometria."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# json se usa para exportar indices reproducibles.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import json` | Importa dependencias del módulo: json.
+- L7 | `# dataclass simplifica estructuras de resumen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `from dataclasses import dataclass, asdict` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L9 | `# Path facilita recorrido de carpetas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `# Counter permite contar etiquetas de forma compacta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L12 | `from collections import Counter` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L13 | `# typing para contratos claros.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L14 | `from typing import Dict, Iterable, List` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L15 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L16 | `# Se reutiliza configuracion global de rutas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L17 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L20 | `# Extensiones validas para imagenes de entrenamiento/inferencia.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L21 | `IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".bmp", ".webp"}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L22 | `# Extensiones validas para audio.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L23 | `AUDIO_EXTENSIONS = {".wav", ".flac", ".mp3"}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L24 | `# Extensiones candidatas para datos tabulares/serializados biométricos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L25 | `BIOMETRIC_EXTENSIONS = {".csv", ".txt", ".pkl", ".zip", ".parquet"}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L26 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L27 | `# Mapeo de codigo CREMA-D -> etiqueta semantica.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L28 | `CREMA_EMOTION_MAP = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L29 | `    "ANG": "angry",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L30 | `    "DIS": "disgust",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L31 | `    "FEA": "fear",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L32 | `    "HAP": "happy",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L33 | `    "NEU": "neutral",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L34 | `    "SAD": "sad",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L35 | `}` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L36 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L37 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L38 | `@dataclass` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L39 | `class DatasetSection:` | Declara la clase `DatasetSection` y su contrato de comportamiento dentro del módulo.
+- L40 | `    """Resumen de una seccion del dataset."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L41 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L42 | `    # Nombre legible de la seccion.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `    name: str` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L44 | `    # Total de archivos detectados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L45 | `    total_files: int` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L46 | `    # Conteo por clase/etiqueta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L47 | `    labels: Dict[str, int]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L48 | `    # Muestra corta de archivos para inspeccion manual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L49 | `    sample_files: List[str]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L50 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L51 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L52 | `@dataclass` | Aplica un decorador para modificar el comportamiento de la función/clase declarada a continuación.
+- L53 | `class DatasetCatalog:` | Declara la clase `DatasetCatalog` y su contrato de comportamiento dentro del módulo.
+- L54 | `    """Catalogo global de datasets usados por Mostacho."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L55 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L56 | `    # Informacion de vision artificial.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L57 | `    vision: DatasetSection` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L58 | `    # Informacion de voz.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L59 | `    voice: DatasetSection` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L60 | `    # Informacion de biometria/wearables.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L61 | `    biometrics: DatasetSection` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L62 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L63 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L64 | `def _iter_files(base_dirs: Iterable[Path], allowed_ext: set[str]) -> List[Path]:` | Declara la función `_iter_files` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L65 | `    """Recorre directorios y devuelve archivos por extension."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L66 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L67 | `    # Se acumulan rutas para garantizar orden estable.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L68 | `    collected: List[Path] = []` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L69 | `    # Se recorre cada directorio candidato.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L70 | `    for base_dir in base_dirs:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L71 | `        # Si no existe, se ignora para tolerar datasets parciales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L72 | `        if not base_dir.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L73 | `            continue` | Salta al siguiente ciclo del bucle actual sin ejecutar el resto del cuerpo.
+- L74 | `        # rglob permite recorrer recursivamente subdirectorios.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L75 | `        for path in base_dir.rglob("*"):` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L76 | `            # Solo se agregan archivos con extension permitida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L77 | `            if path.is_file() and path.suffix.lower() in allowed_ext:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L78 | `                collected.append(path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L79 | `    # Orden alfabetico para resultados deterministas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L80 | `    return sorted(collected)` | Retorna un valor al llamador como resultado explícito de la función.
+- L81 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L82 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L83 | `def _existing_dirs(candidates: Iterable[Path]) -> List[Path]:` | Declara la función `_existing_dirs` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L84 | `    """Filtra y retorna solo directorios existentes en orden."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L85 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L86 | `    # Se conserva orden de prioridad definido por el llamador.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L87 | `    return [path for path in candidates if path.exists()]` | Retorna un valor al llamador como resultado explícito de la función.
+- L88 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L89 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L90 | `def build_vision_section(db_root: Path) -> DatasetSection:` | Declara la función `build_vision_section` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L91 | `    """Construye resumen de datasets de vision."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L92 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L93 | `    # Se prioriza estructura nueva y se mantiene fallback a estructura anterior.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L94 | `    base_dirs = _existing_dirs(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L95 | `        [` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L96 | `            db_root / "artificialvision" / "generalcontext-emotions2",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L97 | `            db_root / "artificialvision" / "generalcontext-emotions",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L98 | `            db_root / "artificialvision" / "DrivFace",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L99 | `            db_root / "processed_data",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L100 | `            db_root / "Data",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L101 | `            db_root / "DrivFace",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L102 | `        ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L103 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L104 | `    # Se recolectan archivos de imagen.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L105 | `    files = _iter_files(base_dirs, IMAGE_EXTENSIONS)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L106 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L107 | `    # Se cuentan etiquetas a partir del nombre del directorio padre.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L108 | `    labels = Counter(path.parent.name for path in files)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L109 | `    # Se arma muestra corta relativa a \`db_root\`.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L110 | `    sample = [str(path.relative_to(db_root)) for path in files[:20]]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L111 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L112 | `    # Se devuelve seccion compacta y serializable.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L113 | `    return DatasetSection(` | Retorna un valor al llamador como resultado explícito de la función.
+- L114 | `        name="vision",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L115 | `        total_files=len(files),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L116 | `        labels=dict(labels),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L117 | `        sample_files=sample,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L118 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L119 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L120 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L121 | `def _crema_label_from_filename(path: Path) -> str:` | Declara la función `_crema_label_from_filename` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L122 | `    """Extrae etiqueta de emocion desde nombre de archivo CREMA-D."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L123 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L124 | `    # Ejemplo: 1008_TAI_HAP_XX.wav -> codigo HAP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L125 | `    parts = path.stem.split("_")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L126 | `    # Si el formato no coincide, se marca como desconocido.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L127 | `    if len(parts) < 3:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L128 | `        return "unknown"` | Retorna un valor al llamador como resultado explícito de la función.
+- L129 | `    # Se normaliza codigo para mapa de etiquetas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L130 | `    code = parts[2].upper()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L131 | `    # Se devuelve etiqueta textual o unknown.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L132 | `    return CREMA_EMOTION_MAP.get(code, "unknown")` | Retorna un valor al llamador como resultado explícito de la función.
+- L133 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L134 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L135 | `def build_voice_section(db_root: Path) -> DatasetSection:` | Declara la función `build_voice_section` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L136 | `    """Construye resumen de dataset de voz."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L137 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L138 | `    # CREMA-D vive en esta ruta en la estructura actual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L139 | `    crema_dir = db_root / "audio" / "crema-d"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L140 | `    # Se recolectan archivos de audio soportados.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L141 | `    files = _iter_files([crema_dir], AUDIO_EXTENSIONS)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L142 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L143 | `    # Se cuenta cada emocion inferida por nombre de archivo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L144 | `    labels = Counter(_crema_label_from_filename(path) for path in files)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L145 | `    # Se prepara muestra de rutas relativas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L146 | `    sample = [str(path.relative_to(db_root)) for path in files[:20]]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L147 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L148 | `    # Se devuelve estructura tipada de salida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L149 | `    return DatasetSection(` | Retorna un valor al llamador como resultado explícito de la función.
+- L150 | `        name="voice",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L151 | `        total_files=len(files),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L152 | `        labels=dict(labels),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L153 | `        sample_files=sample,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L154 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L155 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L156 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L157 | `def _biometric_label_from_path(path: Path) -> str:` | Declara la función `_biometric_label_from_path` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L158 | `    """Genera etiqueta coarse para archivos biométricos."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L159 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L160 | `    # Se normaliza ruta a minúsculas para reglas simples.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L161 | `    normalized = str(path).lower()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L162 | `    # Regla para identificar WESAD.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L163 | `    if "wesad" in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L164 | `        return "wesad"` | Retorna un valor al llamador como resultado explícito de la función.
+- L165 | `    # Regla para identificar SWELL u otros de stress dataset.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L166 | `    if "swell" in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L167 | `        return "swell"` | Retorna un valor al llamador como resultado explícito de la función.
+- L168 | `    # Regla para identificar datos EDA.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L169 | `    if "eda" in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L170 | `        return "eda"` | Retorna un valor al llamador como resultado explícito de la función.
+- L171 | `    # Regla para identificar datos HRV.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L172 | `    if "hrv" in normalized:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L173 | `        return "hrv"` | Retorna un valor al llamador como resultado explícito de la función.
+- L174 | `    # Si no aplica regla, se marca como generic.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L175 | `    return "generic"` | Retorna un valor al llamador como resultado explícito de la función.
+- L176 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L177 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L178 | `def build_biometrics_section(db_root: Path) -> DatasetSection:` | Declara la función `build_biometrics_section` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L179 | `    """Construye resumen de biometria (WESAD + stress)."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L180 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L181 | `    # Se prioriza estructura nueva y se mantiene fallback a la anterior.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L182 | `    base_dirs = _existing_dirs(` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L183 | `        [` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L184 | `            db_root / "biometrics" / "WESAD",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L185 | `            db_root / "biometrics" / "stress" / "dataset",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L186 | `            db_root / "WESAD",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L187 | `            db_root / "stress" / "dataset",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L188 | `        ]` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L189 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L190 | `    # Se recolectan extensiones tabulares/serializadas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L191 | `    files = _iter_files(base_dirs, BIOMETRIC_EXTENSIONS)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L192 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L193 | `    # Se contabilizan etiquetas coarse por ruta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L194 | `    labels = Counter(_biometric_label_from_path(path) for path in files)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L195 | `    # Se arma muestra para revision manual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L196 | `    sample = [str(path.relative_to(db_root)) for path in files[:20]]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L197 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L198 | `    # Se retorna seccion consolidada.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L199 | `    return DatasetSection(` | Retorna un valor al llamador como resultado explícito de la función.
+- L200 | `        name="biometrics",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L201 | `        total_files=len(files),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L202 | `        labels=dict(labels),` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L203 | `        sample_files=sample,` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L204 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L205 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L206 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L207 | `def build_catalog() -> DatasetCatalog:` | Declara la función `build_catalog` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L208 | `    """Construye catalogo completo de datasets desde la configuracion activa."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L209 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L210 | `    # Se cargan rutas globales del proyecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L211 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L212 | `    # Se crea resumen de vision.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L213 | `    vision = build_vision_section(settings.db_root)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L214 | `    # Se crea resumen de voz.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L215 | `    voice = build_voice_section(settings.db_root)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L216 | `    # Se crea resumen de biometria.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L217 | `    biometrics = build_biometrics_section(settings.db_root)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L218 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L219 | `    # Se retorna catalogo global.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L220 | `    return DatasetCatalog(vision=vision, voice=voice, biometrics=biometrics)` | Retorna un valor al llamador como resultado explícito de la función.
+- L221 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L222 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L223 | `def write_catalog_json(output_path: Path) -> Path:` | Declara la función `write_catalog_json` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L224 | `    """Escribe el catalogo a JSON y retorna la ruta final."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L225 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L226 | `    # Se construye el catalogo actual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L227 | `    catalog = build_catalog()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L228 | `    # Se garantiza existencia de la carpeta padre.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L229 | `    output_path.parent.mkdir(parents=True, exist_ok=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L230 | `    # Se serializa dataclass a JSON legible.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L231 | `    output_path.write_text(json.dumps(asdict(catalog), indent=2, ensure_ascii=True), encoding="utf-8")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L232 | `    # Se devuelve ruta para logging superior.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L233 | `    return output_path` | Retorna un valor al llamador como resultado explícito de la función.

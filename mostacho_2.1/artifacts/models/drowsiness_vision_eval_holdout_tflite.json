@@ -1,0 +1,50 @@
+{
+  "split": "holdout",
+  "tflite_model": "/Users/usuario/kenya/mostacho_v2/artifacts/models/drowsiness_vision_int8.tflite",
+  "dataset_root": "/Users/usuario/kenya/db/artificialvision/somnolent-db",
+  "image_size": 160,
+  "num_samples": 5004,
+  "metrics": {
+    "accuracy": 0.4582334132693845,
+    "precision_macro": 0.2398039521086194,
+    "recall_macro": 0.23107965640769376,
+    "f1_macro": 0.23341461870956529,
+    "per_class": {
+      "alert": {
+        "precision": 0.7025768394908414,
+        "recall": 0.6519734946701239,
+        "f1": 0.6763299462044232,
+        "support": 3471
+      },
+      "yawning": {
+        "precision": 0.016835016835016835,
+        "recall": 0.04126547455295736,
+        "f1": 0.023913909924272617,
+        "support": 727
+      },
+      "microsleep": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 806
+      }
+    },
+    "confusion_matrix": [
+      [
+        2263,
+        1207,
+        1
+      ],
+      [
+        697,
+        30,
+        0
+      ],
+      [
+        261,
+        545,
+        0
+      ]
+    ]
+  }
+}

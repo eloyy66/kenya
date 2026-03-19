@@ -1,0 +1,181 @@
+# Comentarios Línea por Línea: `training/train_voice_emotion.py`
+Archivo fuente: `/Users/usuario/kenya/mostacho/src/mostacho/training/train_voice_emotion.py`
+
+Formato: `L<numero> | codigo | explicacion tecnica`
+
+- L1 | `"""Entrenamiento base de emoción en voz usando CREMA-D + TensorFlow."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L2 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L3 | `from __future__ import annotations` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L4 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L5 | `# argparse para CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L6 | `import argparse` | Importa dependencias del módulo: argparse.
+- L7 | `# json para metadata de clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L8 | `import json` | Importa dependencias del módulo: json.
+- L9 | `# Path para rutas portables.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L10 | `from pathlib import Path` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L11 | `# typing para anotaciones.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L12 | `from typing import List, Tuple` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L13 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L14 | `# numpy para matrices de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L15 | `import numpy as np` | Importa dependencias del módulo: numpy as np.
+- L16 | `# tensorflow para modelo neuronal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L17 | `import tensorflow as tf` | Importa dependencias del módulo: tensorflow as tf.
+- L18 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L19 | `# extractor de voz reusable.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L20 | `from mostacho.features.voice import extract_voice_features` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L21 | `# settings globales del proyecto.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L22 | `from mostacho.settings import load_settings` | Importa símbolos específicos desde otro módulo para reducir referencias calificadas en el código.
+- L23 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L24 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L25 | `EMOTION_MAP = {` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L26 | `    "ANG": "angry",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L27 | `    "DIS": "disgust",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L28 | `    "FEA": "fear",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L29 | `    "HAP": "happy",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L30 | `    "NEU": "neutral",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L31 | `    "SAD": "sad",` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L32 | `}` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L33 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L34 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L35 | `def parse_args() -> argparse.Namespace:` | Declara la función `parse_args` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L36 | `    """Argumentos para entrenamiento de voz."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L37 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L38 | `    # Se crea parser CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L39 | `    parser = argparse.ArgumentParser(description="Entrena clasificador de emociones por voz")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L40 | `    # Ruta de carpeta CREMA-D.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L41 | `    parser.add_argument("--data-dir", type=Path, default=None, help="Carpeta con .wav de CREMA-D")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L42 | `    # Épocas de entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L43 | `    parser.add_argument("--epochs", type=int, default=15, help="Numero de epocas")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L44 | `    # Tamaño de lote.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L45 | `    parser.add_argument("--batch-size", type=int, default=64, help="Batch size")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L46 | `    # Límite opcional para entrenamiento rápido.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L47 | `    parser.add_argument("--max-files", type=int, default=0, help="Limite opcional de archivos")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L48 | `    # Retorno de argumentos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L49 | `    return parser.parse_args()` | Retorna un valor al llamador como resultado explícito de la función.
+- L50 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L51 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L52 | `def _label_from_filename(path: Path) -> str:` | Declara la función `_label_from_filename` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L53 | `    """Extrae etiqueta de emoción desde el nombre de archivo CREMA-D."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L54 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L55 | `    # Se separa nombre por guion bajo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L56 | `    parts = path.stem.split("_")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L57 | `    # Si formato inesperado, se marca unknown.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L58 | `    if len(parts) < 3:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L59 | `        return "unknown"` | Retorna un valor al llamador como resultado explícito de la función.
+- L60 | `    # Se lee código de emoción.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L61 | `    code = parts[2].upper()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L62 | `    # Se mapea a etiqueta textual.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L63 | `    return EMOTION_MAP.get(code, "unknown")` | Retorna un valor al llamador como resultado explícito de la función.
+- L64 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L65 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L66 | `def load_dataset(audio_dir: Path, max_files: int = 0) -> Tuple[np.ndarray, np.ndarray, List[str], List[str]]:` | Declara la función `load_dataset` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L67 | `    """Carga dataset de voz y genera matriz de features tabulares."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L68 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L69 | `    # Se listan wav ordenados para reproducibilidad.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L70 | `    files = sorted(audio_dir.glob("*.wav"))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L71 | `    # Se aplica límite si el usuario lo define.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L72 | `    if max_files > 0:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L73 | `        files = files[:max_files]` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L74 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L75 | `    # Contenedores de features y etiquetas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L76 | `    rows = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L77 | `    labels = []` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L78 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L79 | `    # Se recorren archivos para extracción de features.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L80 | `    for path in files:` | Inicia un bucle `for` para iterar secuencialmente sobre una colección o generador.
+- L81 | `        # Se deriva etiqueta por nombre.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L82 | `        label = _label_from_filename(path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L83 | `        # Se ignoran registros sin etiqueta válida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L84 | `        if label == "unknown":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L85 | `            continue` | Salta al siguiente ciclo del bucle actual sin ejecutar el resto del cuerpo.
+- L86 | `        # Se extraen features acústicas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L87 | `        features = extract_voice_features(path)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L88 | `        # Se guardan filas y etiquetas.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L89 | `        rows.append(features)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L90 | `        labels.append(label)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L91 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L92 | `    # Si no hay datos suficientes, se aborta con error explícito.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L93 | `    if not rows:` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L94 | `        raise RuntimeError("No se pudieron construir features de voz.")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L95 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L96 | `    # Se define orden estable de columnas por primer registro.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L97 | `    feature_order = sorted(rows[0].keys())` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L98 | `    # Se arma matriz X en orden fijo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L99 | `    x = np.array([[row.get(name, 0.0) for name in feature_order] for row in rows], dtype=np.float32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L100 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L101 | `    # Se define inventario de clases ordenado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L102 | `    class_names = sorted(set(labels))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L103 | `    # Mapeo etiqueta->índice.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L104 | `    class_to_index = {name: idx for idx, name in enumerate(class_names)}` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L105 | `    # Se codifican etiquetas a enteros.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L106 | `    y = np.array([class_to_index[label] for label in labels], dtype=np.int32)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L107 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L108 | `    # Se retorna dataset listo para entrenamiento.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L109 | `    return x, y, feature_order, class_names` | Retorna un valor al llamador como resultado explícito de la función.
+- L110 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L111 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L112 | `def build_model(num_features: int, num_classes: int) -> tf.keras.Model:` | Declara la función `build_model` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L113 | `    """Construye MLP simple para features de voz."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L114 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L115 | `    # Capa de entrada tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L116 | `    inputs = tf.keras.Input(shape=(num_features,))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L117 | `    # Bloque denso principal.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L118 | `    x = tf.keras.layers.Dense(64, activation="relu")(inputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L119 | `    # Dropout para regularización.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L120 | `    x = tf.keras.layers.Dropout(0.2)(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L121 | `    # Segundo bloque denso.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L122 | `    x = tf.keras.layers.Dense(64, activation="relu")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L123 | `    # Salida softmax por clase.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L124 | `    outputs = tf.keras.layers.Dense(num_classes, activation="softmax")(x)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L125 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L126 | `    # Se crea y compila modelo.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L127 | `    model = tf.keras.Model(inputs=inputs, outputs=outputs)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L128 | `    model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L129 | `    return model` | Retorna un valor al llamador como resultado explícito de la función.
+- L130 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L131 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L132 | `def main() -> None:` | Declara la función `main` con su firma de entrada/salida para encapsular lógica reutilizable.
+- L133 | `    """Entrena y guarda clasificador de voz."""` | Docstring de una sola línea que documenta el bloque inmediatamente asociado.
+- L134 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L135 | `    # Se parsean argumentos.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L136 | `    args = parse_args()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L137 | `    # Se cargan settings globales.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L138 | `    settings = load_settings()` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L139 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L140 | `    # Se define ruta de audio.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L141 | `    audio_dir = args.data_dir or (settings.db_root / "audio" / "crema-d")` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L142 | `    # Validación de existencia de ruta.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L143 | `    if not audio_dir.exists():` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L144 | `        raise FileNotFoundError(f"No existe audio_dir: {audio_dir}")` | Lanza una excepción para propagar un error o violación de invariantes.
+- L145 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L146 | `    # Se construye dataset tabular.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L147 | `    x, y, feature_order, class_names = load_dataset(audio_dir=audio_dir, max_files=args.max_files)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L148 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L149 | `    # Se construye modelo MLP.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L150 | `    model = build_model(num_features=x.shape[1], num_classes=len(class_names))` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L151 | `    # Se entrena con split automático de validación.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L152 | `    model.fit(x, y, epochs=args.epochs, batch_size=args.batch_size, validation_split=0.2, verbose=1)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L153 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L154 | `    # Se prepara carpeta de salida.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L155 | `    output_dir = settings.artifacts_root / "models"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L156 | `    output_dir.mkdir(parents=True, exist_ok=True)` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L157 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L158 | `    # Se guarda modelo entrenado.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L159 | `    model_path = output_dir / "voice_emotion.keras"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L160 | `    model.save(model_path)` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L161 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L162 | `    # Se guarda metadata de features y clases.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L163 | `    metadata_path = output_dir / "voice_emotion_metadata.json"` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L164 | `    metadata_path.write_text(` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L165 | `        json.dumps({"feature_order": feature_order, "class_names": class_names}, indent=2, ensure_ascii=True),` | Ejecuta una instrucción de la lógica del módulo (transformación, control de flujo o coordinación de datos).
+- L166 | `        encoding="utf-8",` | Realiza una asignación para persistir un valor intermedio o configuración de ejecución.
+- L167 | `    )` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L168 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L169 | `    # Mensajes finales para operador.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L170 | `    print(f"Modelo voz guardado en: {model_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L171 | `    print(f"Metadata voz guardada en: {metadata_path}")` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
+- L172 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L173 | `<línea en blanco>` | Línea en blanco usada para separar bloques lógicos y mejorar la legibilidad.
+- L174 | `if __name__ == "__main__":` | Evalúa una condición booleana y abre una rama de ejecución condicional.
+- L175 | `    # Entrada directa CLI.` | Comentario del autor que aclara intención, decisión técnica o contexto operativo.
+- L176 | `    main()` | Ejecuta una llamada de función/método para producir un efecto o calcular un resultado.
