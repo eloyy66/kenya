@@ -1,0 +1,110 @@
+{
+  "generated_at_utc": "2026-04-09T00:16:19Z",
+  "dataset_root": "/Users/usuario/kenya/db/artificialvision/somnolent-db",
+  "split_json": "/Users/usuario/kenya/db/artificialvision/somnolent-db/annotations_holdout.json",
+  "class_names": [
+    "alert",
+    "yawning",
+    "microsleep"
+  ],
+  "num_samples": 5004,
+  "missing_paths": 0,
+  "unknown_labels": {},
+  "agreement_predicted_class": 0.25379696243005595,
+  "latency_ms": {
+    "keras_mean": 56.93874206664835,
+    "keras_p95": 58.565291350305415,
+    "int8_mean": 1.723746226678789,
+    "int8_p95": 1.944920850382914
+  },
+  "keras_best": {
+    "accuracy": 0.3175459632294165,
+    "precision_macro": 0.4317384585752404,
+    "recall_macro": 0.4081476379734475,
+    "f1_macro": 0.25760001915546654,
+    "per_class": {
+      "alert": {
+        "precision": 0.8094262295081968,
+        "recall": 0.22760011524056467,
+        "f1": 0.35529570496964247,
+        "support": 3471
+      },
+      "yawning": {
+        "precision": 0.2907801418439716,
+        "recall": 0.05639614855570839,
+        "f1": 0.0944700460829493,
+        "support": 727
+      },
+      "microsleep": {
+        "precision": 0.19500900437355287,
+        "recall": 0.9404466501240695,
+        "f1": 0.3230343064138078,
+        "support": 806
+      }
+    },
+    "confusion_matrix": [
+      [
+        790,
+        74,
+        2607
+      ],
+      [
+        164,
+        41,
+        522
+      ],
+      [
+        22,
+        26,
+        758
+      ]
+    ]
+  },
+  "tflite_int8": {
+    "accuracy": 0.9028776978417267,
+    "precision_macro": 0.9366329402264068,
+    "recall_macro": 0.811229089046142,
+    "f1_macro": 0.8480395693104761,
+    "per_class": {
+      "alert": {
+        "precision": 0.8873348873348873,
+        "recall": 0.9870354364736387,
+        "f1": 0.9345335515548282,
+        "support": 3471
+      },
+      "yawning": {
+        "precision": 0.9393103448275862,
+        "recall": 0.936726272352132,
+        "f1": 0.9380165289256198,
+        "support": 727
+      },
+      "microsleep": {
+        "precision": 0.9832535885167464,
+        "recall": 0.5099255583126551,
+        "f1": 0.6715686274509803,
+        "support": 806
+      }
+    },
+    "confusion_matrix": [
+      [
+        3426,
+        38,
+        7
+      ],
+      [
+        46,
+        681,
+        0
+      ],
+      [
+        389,
+        6,
+        411
+      ]
+    ]
+  },
+  "artifacts": {
+    "keras_confusion_png": "/Users/usuario/kenya/mostacho_tflite2.2/artifacts/reports/tflite_metrics/drowsiness_confusion_matrix_keras.png",
+    "int8_confusion_png": "/Users/usuario/kenya/mostacho_tflite2.2/artifacts/reports/tflite_metrics/drowsiness_confusion_matrix_int8.png"
+  }
+}

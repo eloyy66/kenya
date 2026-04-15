@@ -1,0 +1,60 @@
+{
+  "model_path": "/Users/usuario/kenya/mostacho_v2.2/artifacts/dmd_processed_dmd_r3/models/dmd_distraction_final.keras",
+  "split_csv": "/Users/usuario/kenya/mostacho_v2.2/artifacts/dmd_processed_dmd_r3/splits/labels_with_split.csv",
+  "threshold_selection": {
+    "threshold": 0.30999999999999994,
+    "precision": 0.9006024096385542,
+    "recall": 0.6114519427402862,
+    "f1": 0.728380024360536,
+    "f0_5": 0.8227848101265821,
+    "selection_reason": "max_recall_with_precision_constraint"
+  },
+  "test_metrics": {
+    "threshold": 0.30999999999999994,
+    "precision": 0.873589164785553,
+    "recall": 0.8358531317494601,
+    "f1": 0.8543046357615894,
+    "roc_auc": 0.9336098885821253,
+    "accuracy": 0.8928571428571429,
+    "false_positives": 56,
+    "false_negatives": 76,
+    "n_test_samples": 1232
+  },
+  "classification_report": {
+    "normal": {
+      "precision": 0.9036755386565273,
+      "recall": 0.9271781534460338,
+      "f1-score": 0.9152759948652118,
+      "support": 769.0
+    },
+    "distracted": {
+      "precision": 0.873589164785553,
+      "recall": 0.8358531317494601,
+      "f1-score": 0.8543046357615894,
+      "support": 463.0
+    },
+    "accuracy": 0.8928571428571429,
+    "macro avg": {
+      "precision": 0.8886323517210402,
+      "recall": 0.881515642597747,
+      "f1-score": 0.8847903153134007,
+      "support": 1232.0
+    },
+    "weighted avg": {
+      "precision": 0.8923687276968998,
+      "recall": 0.8928571428571429,
+      "f1-score": 0.8923622454618212,
+      "support": 1232.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      713,
+      56
+    ],
+    [
+      76,
+      387
+    ]
+  ]
+}
